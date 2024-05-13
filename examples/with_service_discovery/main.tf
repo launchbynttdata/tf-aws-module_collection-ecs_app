@@ -3,7 +3,7 @@ data "aws_caller_identity" "default" {}
 
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
-  version = "~> 3.19.0"
+  version = "~> 5.1.1"
 
   name                 = var.vpc_name
   cidr                 = var.vpc_cidr
@@ -16,7 +16,7 @@ module "vpc" {
 }
 
 module "ecs_platform" {
-  source = "git::https://github.com/nexient-llc/tf-aws-wrapper_module-ecs_platform.git?ref=0.1.0"
+  source = "git::https://github.com/launchbynttdata/tf-aws-module_collection-ecs_platform.git?ref=1.0.0"
 
   vpc_id                     = module.vpc.vpc_id
   private_subnets            = module.vpc.private_subnets
@@ -74,14 +74,13 @@ module "ecs_app" {
   resource_number    = var.resource_number
   resource_names_map = var.resource_names_map
 
-  vpc_id                      = module.vpc.vpc_id
-  private_subnets             = module.vpc.private_subnets
-  ecs_svc_sg                  = var.ecs_svc_sg
-  additional_ecs_svc_sg_rules = var.additional_ecs_svc_sg_rules
-  alb_sg                      = var.alb_sg
-  is_internal                 = var.is_internal
-  load_balancer_type          = var.load_balancer_type
-  target_groups               = var.target_groups
+  vpc_id                 = module.vpc.vpc_id
+  private_subnets        = module.vpc.private_subnets
+  ecs_svc_security_group = var.ecs_svc_sg
+  alb_sg                 = var.alb_sg
+  is_internal            = var.is_internal
+  load_balancer_type     = var.load_balancer_type
+  target_groups          = var.target_groups
 
   # Needs to inject the container image
   containers                         = local.containers
@@ -89,8 +88,6 @@ module "ecs_app" {
   ecs_launch_type                    = var.ecs_launch_type
   ignore_changes_desired_count       = var.ignore_changes_desired_count
   ignore_changes_task_definition     = var.ignore_changes_task_definition
-  task_exec_role_arn                 = var.task_exec_role_arn
-  task_role_arn                      = var.task_role_arn
   network_mode                       = var.network_mode
   assign_public_ip                   = var.assign_public_ip
   health_check_grace_period_seconds  = var.health_check_grace_period_seconds
@@ -101,8 +98,8 @@ module "ecs_app" {
   task_memory                        = var.task_memory
   task_cpu                           = var.task_cpu
   wait_for_steady_state              = var.wait_for_steady_state
-  http_listener                      = var.http_listener
-  https_listener                     = var.https_listener
+  http_tcp_listeners                 = var.http_listener
+  https_listeners                    = var.https_listener
 
   enable_service_discovery         = var.enable_service_discovery
   service_discovery_container_name = var.service_discovery_container_name

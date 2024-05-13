@@ -74,17 +74,16 @@ locals {
 
   http_tcp_listeners = length(var.http_tcp_listeners) > 0 ? var.http_tcp_listeners : var.load_balancer_type == "application" && var.redirect_to_https ? [local.http_to_https_redirect_listener] : []
 
-  # Need to construct the alb_dns_records as a list of object (alias A record)
-  alb_dns_records = [
-    {
-      name = module.resource_names["alb"].standard
+  # Need to construct the alb_dns_records as a map of object (alias A record)
+  alb_dns_records = {
+    (module.resource_names["alb"].standard) = {
       type = "A"
       alias = {
         name    = module.alb.lb_dns_name
         zone_id = module.alb.lb_zone_id
       }
     }
-  ]
+  }
 
   task_exec_role_default_managed_policies_map = {
     ecs_task_exec = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"

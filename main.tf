@@ -26,21 +26,22 @@ data "aws_route53_zone" "dns_zone" {
 
 # This module generates the resource-name of resources based on resource_type, naming_prefix, env etc.
 module "resource_names" {
-  source = "git::https://github.com/nexient-llc/tf-module-resource_name.git?ref=0.1.0"
+  source = "git::https://github.com/launchbynttdata/tf-launch-module_library-resource_name.git?ref=1.0.0"
 
   for_each = var.resource_names_map
 
-  logical_product_name = var.naming_prefix
-  region               = join("", split("-", var.region))
-  class_env            = var.environment
-  cloud_resource_type  = each.value.name
-  instance_env         = var.environment_number
-  instance_resource    = var.resource_number
-  maximum_length       = each.value.max_length
+  logical_product_family  = var.logical_product_family
+  logical_product_service = var.logical_product_service
+  region                  = join("", split("-", var.region))
+  class_env               = var.environment
+  cloud_resource_type     = each.value.name
+  instance_env            = var.environment_number
+  instance_resource       = var.resource_number
+  maximum_length          = each.value.max_length
 }
 
 module "config_bucket" {
-  source = "git::https://github.com/nexient-llc/tf-aws-wrapper_module-s3_bucket.git?ref=0.1.0"
+  source = "git::https://github.com/launchbynttdata/tf-aws-module_collection-s3_bucket.git?ref=1.0.0"
 
   count = var.create_config_bucket ? 1 : 0
 
@@ -227,7 +228,7 @@ module "alb" {
 }
 
 module "container_definitions" {
-  source = "git::https://github.com/cloudposse/terraform-aws-ecs-container-definition.git?ref=tags/0.58.2"
+  source = "git::https://github.com/cloudposse/terraform-aws-ecs-container-definition.git?ref=0.58.2"
 
   count = length(var.containers)
 
@@ -259,7 +260,7 @@ module "container_definitions" {
 }
 
 module "service_discovery_service" {
-  source = "git::https://github.com/nexient-llc/tf-aws-module-service_discovery_service.git?ref=0.1.0"
+  source = "git::https://github.com/launchbynttdata/tf-aws-module_primitive-service_discovery_service.git?ref=1.0.0"
 
   count = var.enable_service_discovery ? 1 : 0
 
@@ -361,12 +362,10 @@ module "ecs_alb_service_task" {
 }
 
 module "alb_dns_record" {
-  source = "git::https://github.com/nexient-llc/tf-aws-wrapper_module-dns_record.git?ref=0.1.0"
+  source = "git::https://github.com/launchbynttdata/tf-aws-module_primitive-dns_record.git?ref=1.0.0"
 
   count = length(var.dns_zone_name) > 0 ? 1 : 0
 
-  zone_name    = var.dns_zone_name
-  private_zone = var.private_zone
-  records      = local.alb_dns_records
-
+  zone_id = var.dns_zone_name
+  records = local.alb_dns_records
 }

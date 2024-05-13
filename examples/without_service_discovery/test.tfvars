@@ -1,5 +1,6 @@
-naming_prefix = "app563"
-aws_profile   = "launch"
+naming_prefix           = "app563"
+logical_product_service = "app563"
+aws_profile             = "launch"
 
 resource_names_map = {
   # Platform
