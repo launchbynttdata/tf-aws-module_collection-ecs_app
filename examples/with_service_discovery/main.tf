@@ -98,8 +98,8 @@ module "ecs_app" {
   task_memory                        = var.task_memory
   task_cpu                           = var.task_cpu
   wait_for_steady_state              = var.wait_for_steady_state
-  http_tcp_listeners                 = var.http_listener
-  https_listeners                    = var.https_listener
+  http_tcp_listeners                 = var.http_listeners
+  https_listeners                    = var.https_listeners
 
   enable_service_discovery         = var.enable_service_discovery
   service_discovery_container_name = var.service_discovery_container_name

@@ -94,11 +94,11 @@ variable "resource_names_map" {
       max_length = 60
     }
     ecs_sg = {
-      name       = "ecs-sg"
+      name       = "ecssg"
       max_length = 60
     }
     alb_sg = {
-      name       = "alb-sg"
+      name       = "albsg"
       max_length = 60
     }
     vpc = {

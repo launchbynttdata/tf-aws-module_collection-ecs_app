@@ -34,11 +34,11 @@ resource_names_map = {
     max_length = 60
   }
   ecs_sg = {
-    name       = "ecs-sg"
+    name       = "ecssg"
     max_length = 60
   }
   alb_sg = {
-    name       = "alb-sg"
+    name       = "albsg"
     max_length = 60
   }
   vpc = {
@@ -64,11 +64,11 @@ private_subnets    = ["10.2.1.0/24", "10.2.2.0/24", "10.2.3.0/24"]
 availability_zones = ["us-east-2a", "us-east-2b", "us-east-2c"]
 
 interface_vpc_endpoints = {
-  ecr-dkr = {
+  ecrdkr = {
     service_name        = "ecr.dkr"
     private_dns_enabled = true
   }
-  ecr-api = {
+  ecrapi = {
     service_name        = "ecr.api"
     private_dns_enabled = true
   }
@@ -155,8 +155,9 @@ target_groups = [
     target_type      = "ip"
   }
 ]
-http_listener  = {}
-https_listener = {}
+http_listeners = []
+
+https_listeners = []
 
 enable_service_discovery         = true
 namespace_name                   = "example1010.local"

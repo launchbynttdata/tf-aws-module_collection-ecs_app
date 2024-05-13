@@ -230,9 +230,27 @@ variable "is_internal" {
   default     = true
 }
 
-variable "http_listener" {}
+variable "http_listeners" {
+  description = "A list of http listeners"
+  type = list(object({
+    port        = number
+    protocol    = string
+    target_port = number
+    action_type = string
+    redirect    = any
+  }))
+}
 
-variable "https_listener" {}
+variable "https_listeners" {
+  description = "A list of https listeners"
+  type = list(object({
+    port            = number
+    protocol        = string
+    target_port     = number
+    ssl_policy      = string
+    certificate_arn = string
+  }))
+}
 
 variable "containers" {
   description = "A map of task definition containers"
