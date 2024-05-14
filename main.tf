@@ -45,7 +45,7 @@ module "config_bucket" {
 
   count = var.create_config_bucket ? 1 : 0
 
-  bucket_name = module.resource_names["s3_config"].recommended_per_length_restriction
+  bucket_name = module.resource_names["s3_config"].dns_compliant_minimal_random_suffix
 
   # Restrict all public access by default
   block_public_acls       = true
@@ -66,11 +66,11 @@ module "config_bucket" {
 
 module "s3_bucket" {
   source  = "terraform-aws-modules/s3-bucket/aws"
-  version = "~> 3.8.2"
+  version = "~> 3.14.1"
 
   count = length(var.alb_logs_bucket_id) > 0 ? 0 : 1
 
-  bucket = module.resource_names["s3_logs"].recommended_per_length_restriction
+  bucket = module.resource_names["s3_logs"].dns_compliant_minimal_random_suffix
 
   # Allow deletion of non-empty bucket
   force_destroy = true

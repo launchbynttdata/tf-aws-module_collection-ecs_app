@@ -141,7 +141,7 @@ If `make check` target is successful, developer is good to commit the code to pr
 |------|--------|---------|
 | <a name="module_resource_names"></a> [resource\_names](#module\_resource\_names) | git::https://github.com/launchbynttdata/tf-launch-module_library-resource_name.git | 1.0.0 |
 | <a name="module_config_bucket"></a> [config\_bucket](#module\_config\_bucket) | git::https://github.com/launchbynttdata/tf-aws-module_collection-s3_bucket.git | 1.0.0 |
-| <a name="module_s3_bucket"></a> [s3\_bucket](#module\_s3\_bucket) | terraform-aws-modules/s3-bucket/aws | ~> 3.8.2 |
+| <a name="module_s3_bucket"></a> [s3\_bucket](#module\_s3\_bucket) | terraform-aws-modules/s3-bucket/aws | ~> 3.14.1 |
 | <a name="module_s3_bucket_objects"></a> [s3\_bucket\_objects](#module\_s3\_bucket\_objects) | terraform-aws-modules/s3-bucket/aws//modules/object | 3.15.1 |
 | <a name="module_sg_ecs_service"></a> [sg\_ecs\_service](#module\_sg\_ecs\_service) | terraform-aws-modules/security-group/aws | ~> 4.17.1 |
 | <a name="module_sg_alb"></a> [sg\_alb](#module\_sg\_alb) | terraform-aws-modules/security-group/aws | ~> 4.17.1 |

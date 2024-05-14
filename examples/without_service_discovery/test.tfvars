@@ -1,6 +1,6 @@
 naming_prefix           = "app563"
 logical_product_service = "app563"
-aws_profile             = "launch"
+aws_profile             = "launch-sandbox-admin"
 
 resource_names_map = {
   # Platform
