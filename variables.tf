@@ -50,16 +50,19 @@ variable "environment" {
 
 variable "environment_number" {
   description = "The environment count for the respective environment. Defaults to 000. Increments in value of 1"
+  type        = string
   default     = "000"
 }
 
 variable "resource_number" {
   description = "The resource count for the respective resource. Defaults to 000. Increments in value of 1"
+  type        = string
   default     = "000"
 }
 
 variable "region" {
   description = "AWS Region in which the infra needs to be provisioned"
+  type        = string
   default     = "us-east-2"
 }
 
@@ -399,11 +402,13 @@ variable "ignore_changes_desired_count" {
 
 variable "task_cpu" {
   description = "Amount of CPU to be allocated to the task"
+  type        = string
   default     = 512
 }
 
 variable "task_memory" {
   description = "Amount of Memory to be allocated to the task"
+  type        = number
   default     = 1024
 }
 variable "health_check_grace_period_seconds" {
@@ -478,18 +483,6 @@ variable "service_discovery_service_name" {
   default     = ""
 }
 
-variable "ecs_exec_role_managed_policy_arns" {
-  description = "A list (ARNs) of AWS managed policies to be attached to the ECS Task Exec role."
-  type        = list(string)
-  default     = []
-}
-
-variable "ecs_role_managed_policy_arns" {
-  description = "A list (ARNs) of AWS managed policies to be attached to the ECS Task role."
-  type        = list(string)
-  default     = []
-}
-
 variable "ecs_exec_role_custom_policy_json" {
   description = "Custom policy to attach to ecs task execution role. Document must be valid json."
   type        = string
@@ -522,5 +515,6 @@ variable "kms_s3_key_arn" {
 
 variable "tags" {
   description = "A map of custom tags to be associated with the provisioned infrastructures."
+  type        = map(string)
   default     = {}
 }

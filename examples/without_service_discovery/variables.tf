@@ -50,16 +50,19 @@ variable "environment" {
 
 variable "environment_number" {
   description = "The environment count for the respective environment. Defaults to 000. Increments in value of 1"
+  type        = string
   default     = "000"
 }
 
 variable "resource_number" {
   description = "The resource count for the respective resource. Defaults to 000. Increments in value of 1"
+  type        = string
   default     = "000"
 }
 
 variable "region" {
   description = "AWS Region in which the infra needs to be provisioned"
+  type        = string
   default     = "us-east-2"
 }
 
@@ -87,20 +90,24 @@ variable "resource_names_map" {
 ### VPC related variables
 
 variable "vpc_name" {
+  type    = string
   default = "test-vpc-015935234"
 }
 
 variable "vpc_cidr" {
+  type    = string
   default = "10.1.0.0/16"
 }
 
 variable "private_subnets" {
   description = "List of private subnet cidrs"
+  type        = list(string)
   default     = ["10.1.1.0/24", "10.1.2.0/24", "10.1.3.0/24"]
 }
 
 variable "availability_zones" {
   description = "List of availability zones for the VPC"
+  type        = list(string)
   default     = ["us-east-2a", "us-east-2b", "us-east-2c"]
 }
 
@@ -144,6 +151,7 @@ variable "vpce_security_group" {
 ### ECS Cluster related variables
 variable "container_insights_enabled" {
   description = "Whether to enable container Insights or not"
+  type        = bool
   default     = true
 }
 
@@ -155,15 +163,18 @@ variable "ecr_repo_name" {
 
 variable "repo_force_delete" {
   description = "If true, terraform is able to delete the ECR that contains images"
+  type        = bool
   default     = true
 }
 
 variable "aws_profile" {
   description = "AWS Profile to login to AWS to push to ECR Repo"
+  type        = string
 }
 
 variable "image_tag" {
   description = "Docker image tag for primary container"
+  type        = string
   default     = "0.0.1"
 }
 ### ECS Task related
@@ -180,17 +191,6 @@ variable "ecs_svc_sg" {
     ingress_with_sg          = optional(list(map(string)))
     egress_with_sg           = optional(list(map(string)))
   })
-}
-
-variable "additional_ecs_svc_sg_rules" {
-  description = "Additional rules to be attached to ECS Service Security Group"
-  type = list(object({
-    cidr_blocks = string
-    from_port   = number
-    to_port     = number
-    protocol    = optional(string, "tcp")
-  }))
-  default = []
 }
 
 ### ALB related variables
@@ -271,26 +271,6 @@ variable "containers" {
 
 ### ECS Task related variables
 
-variable "task_exec_role_arn" {
-  type        = string
-  description = <<-EOT
-    ARN of IAM role that allows the
-    ECS/Fargate agent to make calls to the ECS API on your behalf.
-    If the list is empty, a role will be created for you.
-    EOT
-  default     = ""
-}
-
-variable "task_role_arn" {
-  type        = string
-  description = <<-EOT
-    ARN of IAM roles that allows
-    your Amazon ECS container task to make calls to other AWS services.
-    If the list is empty, a role will be created for you.
-    EOT
-  default     = ""
-}
-
 variable "ecs_launch_type" {
   description = "The launch type of the ECS service. Default is FARGATE"
   type        = string
@@ -323,11 +303,13 @@ variable "ignore_changes_desired_count" {
 
 variable "task_cpu" {
   description = "Amount of CPU to be allocated to the task"
+  type        = number
   default     = 512
 }
 
 variable "task_memory" {
   description = "Amount of Memory to be allocated to the task"
+  type        = number
   default     = 1024
 }
 variable "health_check_grace_period_seconds" {

@@ -50,7 +50,7 @@ module "ecr" {
   tags = var.tags
 }
 
-resource "null_resource" "ecr_push" {
+resource "terraform_data" "ecr_push" {
   provisioner "local-exec" {
     command = <<-EOT
       # Make sure user is logged in to AWS to the same profile specified here

@@ -10,12 +10,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-data "aws_caller_identity" "current" {}
-
-data "aws_vpc" "vpc" {
-  id = var.vpc_id
-}
-
 # DNS Zone where the records for the ALB will be created
 data "aws_route53_zone" "dns_zone" {
   count = length(var.dns_zone_name) > 0 || length(var.https_listeners) > 0 ? 1 : 0
@@ -350,8 +344,8 @@ module "ecs_alb_service_task" {
 
   ecs_load_balancers = [
     {
-      container_name   = var.containers[0].name
-      container_port   = var.containers[0].port_mappings[0].containerPort
+      container_name   = try(var.containers[0].name, "name_missing")
+      container_port   = try(var.containers[0].port_mappings[0].containerPort, 80)
       target_group_arn = module.alb.target_group_arns[0]
       # If target_group is specified, elb_name must be null
       elb_name = null
