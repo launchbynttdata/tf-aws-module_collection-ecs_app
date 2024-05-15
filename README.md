@@ -235,4 +235,5 @@ If `make check` target is successful, developer is good to commit the code to pr
 | <a name="output_service_discovery_service_arn"></a> [service\_discovery\_service\_arn](#output\_service\_discovery\_service\_arn) | ARN of Service Discovery Service |
 | <a name="output_service_discovery_service_id"></a> [service\_discovery\_service\_id](#output\_service\_discovery\_service\_id) | ID of Service Discovery Service |
 | <a name="output_config_bucket_name"></a> [config\_bucket\_name](#output\_config\_bucket\_name) | ID of the config S3 bucket |
+| <a name="output_resource_names"></a> [resource\_names](#output\_resource\_names) | A map of resource\_name\_types to generated resource names used in this module |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

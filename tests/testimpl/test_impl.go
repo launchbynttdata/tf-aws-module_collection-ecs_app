@@ -16,7 +16,7 @@ import (
 func TestDoesEcsAppExist(t *testing.T, ctx types.TestContext) {
 	ecsClient := ecs.NewFromConfig(GetAWSConfig(t))
 	resourceNames := terraform.OutputMap(t, ctx.TerratestTerraformOptions(), "resource_names")
-	ecsClusterArn := terraform.Output(t, ctx.TerratestTerraformOptions(), "fargate_arn")
+	ecsClusterArn := terraform.Output(t, ctx.TerratestTerraformOptions(), "ecs_cluster_arn")
 
 	t.Run("TestDoesClusterExist", func(t *testing.T) {
 		output, err := ecsClient.DescribeClusters(context.TODO(), &ecs.DescribeClustersInput{Clusters: []string{ecsClusterArn}})

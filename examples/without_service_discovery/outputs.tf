@@ -37,3 +37,7 @@ output "namespace_id" {
 output "namespace_hosted_zone" {
   value = module.ecs_platform.namespace_hosted_zone
 }
+
+output "resource_names" {
+  value = module.ecs_app.resource_names
+}
