@@ -1,6 +1,6 @@
-naming_prefix           = "app563"
-logical_product_service = "app563"
-aws_profile             = "launch-sandbox-admin"
+logical_product_service = "dso101"
+# Ensure you have a profile by this name in your ~/.aws/config file
+aws_profile = "launch-sandbox-admin"
 
 resource_names_map = {
   # Platform
@@ -109,9 +109,10 @@ alb_sg = {
 }
 
 ecs_svc_sg = {
-  egress_rules       = ["all-all"]
-  egress_cidr_blocks = ["0.0.0.0/0"]
-  ingress_port       = "80"
+  ingress_rules       = ["http-80-tcp"]
+  ingress_cidr_blocks = ["0.0.0.0/0"]
+  egress_rules        = ["all-all"]
+  egress_cidr_blocks  = ["0.0.0.0/0"]
 }
 containers = [
   {
@@ -146,7 +147,20 @@ target_groups = [
     target_type      = "ip"
   }
 ]
-http_listeners  = []
+http_listeners = [
+  {
+    port        = 80
+    protocol    = "HTTP"
+    action_type = "forward"
+    redirect    = {}
+  }
+]
 https_listeners = []
 
 enable_service_discovery = false
+
+tags = {
+  Purpose = "terratest examples"
+  Env     = "sandbox"
+  Team    = "dso"
+}

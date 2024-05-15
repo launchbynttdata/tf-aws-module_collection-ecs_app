@@ -9,6 +9,7 @@ This module will provision a ECS Service for a corresponding application. It wil
 **Note:** Currently, user needs to push a docker image manually to the ECR repo created by this module, post which the ECS Service can be successfully tested
 
 ## Pre-requisites
+- Need to have docker engine installed in the local machine to pull and push the docker image to the ECR repository
 - Need to create a `provider.tf` with below contents
     ```
     provider "aws" {

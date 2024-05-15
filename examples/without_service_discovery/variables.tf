@@ -10,12 +10,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-variable "naming_prefix" {
-  description = "Prefix for the provisioned resources."
-  type        = string
-  default     = "platform"
-}
-
 variable "logical_product_family" {
   type        = string
   description = <<EOF
@@ -177,10 +171,14 @@ variable "image_tag" {
 variable "ecs_svc_sg" {
   description = "Security Group for the ECS Service. Allows traffic from the ALB Security group"
   type = object({
-    description        = optional(string)
-    ingress_port       = optional(string, "80")
-    egress_rules       = optional(list(string))
-    egress_cidr_blocks = optional(list(string))
+    ingress_rules            = optional(list(string))
+    ingress_cidr_blocks      = optional(list(string))
+    ingress_with_cidr_blocks = optional(list(map(string)))
+    egress_rules             = optional(list(string))
+    egress_cidr_blocks       = optional(list(string))
+    egress_with_cidr_blocks  = optional(list(map(string)))
+    ingress_with_sg          = optional(list(map(string)))
+    egress_with_sg           = optional(list(map(string)))
   })
 }
 
@@ -235,7 +233,6 @@ variable "http_listeners" {
   type = list(object({
     port        = number
     protocol    = string
-    target_port = number
     action_type = string
     redirect    = any
   }))
@@ -396,5 +393,7 @@ variable "service_discovery_service_name" {
 }
 
 variable "tags" {
-  default = {}
+  description = "A map of tags to attach to all resources"
+  type        = map(string)
+  default     = {}
 }

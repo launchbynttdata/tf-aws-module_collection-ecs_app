@@ -24,7 +24,7 @@ data "aws_route53_zone" "dns_zone" {
   private_zone = var.private_zone
 }
 
-# This module generates the resource-name of resources based on resource_type, naming_prefix, env etc.
+# This module generates the resource-name of resources based on resource_type, logical_product_family, logical_product_service, env etc.
 module "resource_names" {
   source = "git::https://github.com/launchbynttdata/tf-launch-module_library-resource_name.git?ref=1.0.0"
 
@@ -284,7 +284,7 @@ module "ecs_task_execution_policy" {
   version = "~> 0.4.0"
 
   enabled                       = true
-  namespace                     = "${var.naming_prefix}-${join("", split("-", var.region))}"
+  namespace                     = "${var.logical_product_family}-${var.logical_product_service}-${join("", split("-", var.region))}"
   stage                         = var.environment_number
   environment                   = var.environment
   name                          = "${var.resource_names_map["task_exec_policy"].name}-${var.resource_number}"
@@ -300,7 +300,7 @@ module "ecs_task_policy" {
   version = "~> 0.4.0"
 
   enabled                     = true
-  namespace                   = "${var.naming_prefix}-${join("", split("-", var.region))}"
+  namespace                   = "${var.logical_product_family}-${var.logical_product_service}-${join("", split("-", var.region))}"
   stage                       = var.environment_number
   environment                 = var.environment
   name                        = "${var.resource_names_map["task_policy"].name}-${var.resource_number}"
@@ -314,7 +314,7 @@ module "ecs_alb_service_task" {
   source  = "cloudposse/ecs-alb-service-task/aws"
   version = "~> 0.67.1"
   # This module generates its own name. Can't use the labels module
-  namespace                          = var.naming_prefix
+  namespace                          = "${var.logical_product_family}-${var.logical_product_service}"
   stage                              = var.environment_number
   name                               = var.resource_names_map["ecs_service"].name
   environment                        = var.environment
