@@ -15,7 +15,7 @@ import (
 
 func TestDoesEcsAppExist(t *testing.T, ctx types.TestContext) {
 	ecsClient := ecs.NewFromConfig(GetAWSConfig(t))
-	resourceNames := terraform.OutputMap(t, ctx.TerratestTerraformOptions(), "resource_names")
+	ecsClusterName := terraform.Output(t, ctx.TerratestTerraformOptions(), "ecs_cluster_name")
 	ecsClusterArn := terraform.Output(t, ctx.TerratestTerraformOptions(), "ecs_cluster_arn")
 
 	t.Run("TestDoesClusterExist", func(t *testing.T) {
@@ -26,7 +26,7 @@ func TestDoesEcsAppExist(t *testing.T, ctx types.TestContext) {
 
 		require.Equal(t, 1, len(output.Clusters), "Expected 1 cluster to be returned")
 		require.Equal(t, ecsClusterArn, *output.Clusters[0].ClusterArn, "Expected cluster ARN to match")
-		require.Equal(t, resourceNames["ecs_cluster"], *output.Clusters[0].ClusterName, "Expected cluster name to match")
+		require.Equal(t, ecsClusterName, *output.Clusters[0].ClusterName, "Expected cluster name to match")
 	})
 }
 

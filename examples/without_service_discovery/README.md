@@ -114,5 +114,5 @@ This module will provision a ECS Service for a corresponding application. It wil
 | <a name="output_service_discovery_service_id"></a> [service\_discovery\_service\_id](#output\_service\_discovery\_service\_id) | n/a |
 | <a name="output_namespace_id"></a> [namespace\_id](#output\_namespace\_id) | n/a |
 | <a name="output_namespace_hosted_zone"></a> [namespace\_hosted\_zone](#output\_namespace\_hosted\_zone) | n/a |
-| <a name="output_resource_names"></a> [resource\_names](#output\_resource\_names) | n/a |
+| <a name="output_ecs_cluster_name"></a> [ecs\_cluster\_name](#output\_ecs\_cluster\_name) | n/a |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

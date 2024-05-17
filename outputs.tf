@@ -54,8 +54,3 @@ output "config_bucket_name" {
   description = "ID of the config S3 bucket"
   value       = var.create_config_bucket ? module.resource_names["s3_config"].recommended_per_length_restriction : ""
 }
-
-output "resource_names" {
-  description = "A map of resource_name_types to generated resource names used in this module"
-  value       = { for k, v in var.resource_names_map : k => module.resource_names[k].standard }
-}
