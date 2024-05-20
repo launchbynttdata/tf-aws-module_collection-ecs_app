@@ -7,6 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/ecs"
+	"github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2"
 	"github.com/gruntwork-io/terratest/modules/terraform"
 
 	"github.com/launchbynttdata/lcaf-component-terratest/types"
@@ -17,6 +18,8 @@ func TestDoesEcsAppExist(t *testing.T, ctx types.TestContext) {
 	ecsClient := ecs.NewFromConfig(GetAWSConfig(t))
 	ecsClusterName := terraform.Output(t, ctx.TerratestTerraformOptions(), "ecs_cluster_name")
 	ecsClusterArn := terraform.Output(t, ctx.TerratestTerraformOptions(), "ecs_cluster_arn")
+
+	elbClient := elasticloadbalancingv2.NewFromConfig(GetAWSConfig(t))
 
 	t.Run("TestDoesClusterExist", func(t *testing.T) {
 		output, err := ecsClient.DescribeClusters(context.TODO(), &ecs.DescribeClustersInput{Clusters: []string{ecsClusterArn}})
@@ -52,6 +55,32 @@ func TestDoesEcsAppExist(t *testing.T, ctx types.TestContext) {
 		}
 
 		require.Equal(t, ecsTaskDefinitionArn, *output.TaskDefinition.TaskDefinitionArn, "Expected task definition ARN to match")
+	})
+
+	t.Run("TestDoesLoadBalancerExist", func(t *testing.T) {
+		elbArn := terraform.Output(t, ctx.TerratestTerraformOptions(), "alb_arn")
+
+		output, err := elbClient.DescribeLoadBalancers(context.TODO(), &elasticloadbalancingv2.DescribeLoadBalancersInput{LoadBalancerArns: []string{elbArn}})
+		if err != nil {
+			t.Errorf("Error getting load balancer description: %v", err)
+		}
+
+		require.Equal(t, 1, len(output.LoadBalancers), "Expected 1 load balancer to be returned")
+		require.Equal(t, elbArn, *output.LoadBalancers[0].LoadBalancerArn, "Expected load balancer ARN to match")
+	})
+
+	t.Run("TestDoesTargetGroupExist", func(t *testing.T) {
+		targetGroupName := terraform.Output(t, ctx.TerratestTerraformOptions(), "alb_target_group_name")
+		targetGroupArn := terraform.Output(t, ctx.TerratestTerraformOptions(), "alb_target_group_arn")
+
+		output, err := elbClient.DescribeTargetGroups(context.TODO(), &elasticloadbalancingv2.DescribeTargetGroupsInput{TargetGroupArns: []string{targetGroupArn}})
+		if err != nil {
+			t.Errorf("Error getting target group description: %v", err)
+		}
+
+		require.Equal(t, 1, len(output.TargetGroups), "Expected 1 target group to be returned")
+		require.Equal(t, targetGroupArn, *output.TargetGroups[0].TargetGroupArn, "Expected target group ARN to match")
+		require.Equal(t, targetGroupName, *output.TargetGroups[0].TargetGroupName, "Expected target group name to match")
 	})
 }
 

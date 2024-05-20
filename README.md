@@ -230,6 +230,8 @@ If `make check` target is successful, developer is good to commit the code to pr
 | <a name="output_alb_dns"></a> [alb\_dns](#output\_alb\_dns) | DNS of the Application Load Balancer |
 | <a name="output_alb_arn"></a> [alb\_arn](#output\_alb\_arn) | ARN of the Application Load Balancer |
 | <a name="output_alb_dns_records"></a> [alb\_dns\_records](#output\_alb\_dns\_records) | Custom DNS record for the ALB |
+| <a name="output_alb_target_group_arns"></a> [alb\_target\_group\_arns](#output\_alb\_target\_group\_arns) | ARNs of the ALB Target Groups |
+| <a name="output_alb_target_group_names"></a> [alb\_target\_group\_names](#output\_alb\_target\_group\_names) | Names of the ALB Target Groups |
 | <a name="output_s3_logs_arn"></a> [s3\_logs\_arn](#output\_s3\_logs\_arn) | ARN of S3 bucket for logs |
 | <a name="output_s3_logs_id"></a> [s3\_logs\_id](#output\_s3\_logs\_id) | ID of S3 bucket for logs |
 | <a name="output_service_discovery_service_arn"></a> [service\_discovery\_service\_arn](#output\_service\_discovery\_service\_arn) | ARN of Service Discovery Service |

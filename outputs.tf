@@ -30,6 +30,16 @@ output "alb_dns_records" {
   value       = try(module.alb_dns_record[0].record_fqdns, "")
 }
 
+output "alb_target_group_arns" {
+  description = "ARNs of the ALB Target Groups"
+  value       = module.alb.target_group_arns
+}
+
+output "alb_target_group_names" {
+  description = "Names of the ALB Target Groups"
+  value       = module.alb.target_group_names
+}
+
 output "s3_logs_arn" {
   description = "ARN of S3 bucket for logs"
   value       = try(module.s3_bucket[0].s3_bucket_arn, "")
