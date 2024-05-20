@@ -23,7 +23,8 @@ module "ecs_platform" {
   gateway_vpc_endpoints      = var.gateway_vpc_endpoints
   interface_vpc_endpoints    = var.interface_vpc_endpoints
   route_table_ids            = concat([module.vpc.default_route_table_id], module.vpc.private_route_table_ids)
-  naming_prefix              = var.naming_prefix
+  logical_product_family     = var.logical_product_family
+  logical_product_service    = var.logical_product_service
   vpce_security_group        = var.vpce_security_group
   resource_names_map         = var.resource_names_map
   region                     = var.region
@@ -49,7 +50,7 @@ module "ecr" {
   tags = var.tags
 }
 
-resource "null_resource" "ecr_push" {
+resource "terraform_data" "ecr_push" {
   provisioner "local-exec" {
     command = <<-EOT
       # Make sure user is logged in to AWS to the same profile specified here
@@ -67,12 +68,13 @@ resource "null_resource" "ecr_push" {
 module "ecs_app" {
   source = "../.."
 
-  naming_prefix      = var.naming_prefix
-  region             = var.region
-  environment        = var.environment
-  environment_number = var.environment_number
-  resource_number    = var.resource_number
-  resource_names_map = var.resource_names_map
+  logical_product_family  = var.logical_product_family
+  logical_product_service = var.logical_product_service
+  region                  = var.region
+  environment             = var.environment
+  environment_number      = var.environment_number
+  resource_number         = var.resource_number
+  resource_names_map      = var.resource_names_map
 
   vpc_id                 = module.vpc.vpc_id
   private_subnets        = module.vpc.private_subnets
@@ -98,8 +100,8 @@ module "ecs_app" {
   task_memory                        = var.task_memory
   task_cpu                           = var.task_cpu
   wait_for_steady_state              = var.wait_for_steady_state
-  http_tcp_listeners                 = var.http_listener
-  https_listeners                    = var.https_listener
+  http_tcp_listeners                 = var.http_listeners
+  https_listeners                    = var.https_listeners
 
   enable_service_discovery         = var.enable_service_discovery
   service_discovery_container_name = var.service_discovery_container_name

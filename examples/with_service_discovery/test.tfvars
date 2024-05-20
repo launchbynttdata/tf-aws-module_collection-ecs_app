@@ -1,6 +1,6 @@
-naming_prefix           = "app203"
-logical_product_service = "app203"
-aws_profile             = "launch"
+logical_product_service = "dso102"
+# Ensure you have a profile by this name in your ~/.aws/config file
+aws_profile = "launch-sandbox-admin"
 
 resource_names_map = {
   # Platform
@@ -34,11 +34,11 @@ resource_names_map = {
     max_length = 60
   }
   ecs_sg = {
-    name       = "ecs-sg"
+    name       = "ecssg"
     max_length = 60
   }
   alb_sg = {
-    name       = "alb-sg"
+    name       = "albsg"
     max_length = 60
   }
   vpc = {
@@ -64,11 +64,11 @@ private_subnets    = ["10.2.1.0/24", "10.2.2.0/24", "10.2.3.0/24"]
 availability_zones = ["us-east-2a", "us-east-2b", "us-east-2c"]
 
 interface_vpc_endpoints = {
-  ecr-dkr = {
+  ecrdkr = {
     service_name        = "ecr.dkr"
     private_dns_enabled = true
   }
-  ecr-api = {
+  ecrapi = {
     service_name        = "ecr.api"
     private_dns_enabled = true
   }
@@ -109,19 +109,12 @@ alb_sg = {
 }
 
 ecs_svc_sg = {
-  egress_rules       = ["all-all"]
-  egress_cidr_blocks = ["0.0.0.0/0"]
-  ingress_port       = "80"
+  ingress_rules       = ["http-80-tcp"]
+  ingress_cidr_blocks = ["0.0.0.0/0"]
+  egress_rules        = ["all-all"]
+  egress_cidr_blocks  = ["0.0.0.0/0"]
 }
 
-additional_ecs_svc_sg_rules = [
-  {
-    cidr_blocks = "0.0.0.0/0"
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-  }
-]
 containers = [
   {
     name = "backend"
@@ -155,10 +148,23 @@ target_groups = [
     target_type      = "ip"
   }
 ]
-http_listener  = {}
-https_listener = {}
+http_listeners = [
+  {
+    port        = 80
+    protocol    = "HTTP"
+    action_type = "forward"
+    redirect    = {}
+  }
+]
+https_listeners = []
 
 enable_service_discovery         = true
 namespace_name                   = "example1010.local"
 service_discovery_container_name = "backend"
 service_discovery_service_name   = "test1"
+
+tags = {
+  Purpose = "terratest examples"
+  Env     = "sandbox"
+  Team    = "dso"
+}

@@ -10,12 +10,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-data "aws_caller_identity" "current" {}
-
-data "aws_vpc" "vpc" {
-  id = var.vpc_id
-}
-
 # DNS Zone where the records for the ALB will be created
 data "aws_route53_zone" "dns_zone" {
   count = length(var.dns_zone_name) > 0 || length(var.https_listeners) > 0 ? 1 : 0
@@ -24,7 +18,7 @@ data "aws_route53_zone" "dns_zone" {
   private_zone = var.private_zone
 }
 
-# This module generates the resource-name of resources based on resource_type, naming_prefix, env etc.
+# This module generates the resource-name of resources based on resource_type, logical_product_family, logical_product_service, env etc.
 module "resource_names" {
   source = "git::https://github.com/launchbynttdata/tf-launch-module_library-resource_name.git?ref=1.0.0"
 
@@ -45,7 +39,7 @@ module "config_bucket" {
 
   count = var.create_config_bucket ? 1 : 0
 
-  bucket_name = module.resource_names["s3_config"].recommended_per_length_restriction
+  bucket_name = module.resource_names["s3_config"].dns_compliant_minimal_random_suffix
 
   # Restrict all public access by default
   block_public_acls       = true
@@ -66,11 +60,11 @@ module "config_bucket" {
 
 module "s3_bucket" {
   source  = "terraform-aws-modules/s3-bucket/aws"
-  version = "~> 3.8.2"
+  version = "~> 3.14.1"
 
   count = length(var.alb_logs_bucket_id) > 0 ? 0 : 1
 
-  bucket = module.resource_names["s3_logs"].recommended_per_length_restriction
+  bucket = module.resource_names["s3_logs"].dns_compliant_minimal_random_suffix
 
   # Allow deletion of non-empty bucket
   force_destroy = true
@@ -284,7 +278,7 @@ module "ecs_task_execution_policy" {
   version = "~> 0.4.0"
 
   enabled                       = true
-  namespace                     = "${var.naming_prefix}-${join("", split("-", var.region))}"
+  namespace                     = "${var.logical_product_family}-${var.logical_product_service}-${join("", split("-", var.region))}"
   stage                         = var.environment_number
   environment                   = var.environment
   name                          = "${var.resource_names_map["task_exec_policy"].name}-${var.resource_number}"
@@ -300,7 +294,7 @@ module "ecs_task_policy" {
   version = "~> 0.4.0"
 
   enabled                     = true
-  namespace                   = "${var.naming_prefix}-${join("", split("-", var.region))}"
+  namespace                   = "${var.logical_product_family}-${var.logical_product_service}-${join("", split("-", var.region))}"
   stage                       = var.environment_number
   environment                 = var.environment
   name                        = "${var.resource_names_map["task_policy"].name}-${var.resource_number}"
@@ -314,7 +308,7 @@ module "ecs_alb_service_task" {
   source  = "cloudposse/ecs-alb-service-task/aws"
   version = "~> 0.67.1"
   # This module generates its own name. Can't use the labels module
-  namespace                          = var.naming_prefix
+  namespace                          = "${var.logical_product_family}-${var.logical_product_service}"
   stage                              = var.environment_number
   name                               = var.resource_names_map["ecs_service"].name
   environment                        = var.environment
@@ -350,8 +344,8 @@ module "ecs_alb_service_task" {
 
   ecs_load_balancers = [
     {
-      container_name   = var.containers[0].name
-      container_port   = var.containers[0].port_mappings[0].containerPort
+      container_name   = try(var.containers[0].name, "name_missing")
+      container_port   = try(var.containers[0].port_mappings[0].containerPort, 80)
       target_group_arn = module.alb.target_group_arns[0]
       # If target_group is specified, elb_name must be null
       elb_name = null

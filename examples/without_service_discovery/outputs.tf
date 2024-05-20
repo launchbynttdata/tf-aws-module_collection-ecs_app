@@ -37,3 +37,7 @@ output "namespace_id" {
 output "namespace_hosted_zone" {
   value = module.ecs_platform.namespace_hosted_zone
 }
+
+output "ecs_cluster_name" {
+  value = module.ecs_platform.resource_names["ecs_cluster"]
+}

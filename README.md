@@ -127,7 +127,7 @@ If `make check` target is successful, developer is good to commit the code to pr
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.5.0, <= 1.5.5 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 5.0 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.0 |
 
 ## Providers
 
@@ -141,7 +141,7 @@ If `make check` target is successful, developer is good to commit the code to pr
 |------|--------|---------|
 | <a name="module_resource_names"></a> [resource\_names](#module\_resource\_names) | git::https://github.com/launchbynttdata/tf-launch-module_library-resource_name.git | 1.0.0 |
 | <a name="module_config_bucket"></a> [config\_bucket](#module\_config\_bucket) | git::https://github.com/launchbynttdata/tf-aws-module_collection-s3_bucket.git | 1.0.0 |
-| <a name="module_s3_bucket"></a> [s3\_bucket](#module\_s3\_bucket) | terraform-aws-modules/s3-bucket/aws | ~> 3.8.2 |
+| <a name="module_s3_bucket"></a> [s3\_bucket](#module\_s3\_bucket) | terraform-aws-modules/s3-bucket/aws | ~> 3.14.1 |
 | <a name="module_s3_bucket_objects"></a> [s3\_bucket\_objects](#module\_s3\_bucket\_objects) | terraform-aws-modules/s3-bucket/aws//modules/object | 3.15.1 |
 | <a name="module_sg_ecs_service"></a> [sg\_ecs\_service](#module\_sg\_ecs\_service) | terraform-aws-modules/security-group/aws | ~> 4.17.1 |
 | <a name="module_sg_alb"></a> [sg\_alb](#module\_sg\_alb) | terraform-aws-modules/security-group/aws | ~> 4.17.1 |
@@ -158,22 +158,19 @@ If `make check` target is successful, developer is good to commit the code to pr
 
 | Name | Type |
 |------|------|
-| [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
 | [aws_route53_zone.dns_zone](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/route53_zone) | data source |
-| [aws_vpc.vpc](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/vpc) | data source |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_naming_prefix"></a> [naming\_prefix](#input\_naming\_prefix) | Prefix for the provisioned resources. | `string` | `"platform"` | no |
 | <a name="input_logical_product_family"></a> [logical\_product\_family](#input\_logical\_product\_family) | (Required) Name of the product family for which the resource is created.<br>    Example: org\_name, department\_name. | `string` | `"launch"` | no |
 | <a name="input_logical_product_service"></a> [logical\_product\_service](#input\_logical\_product\_service) | (Required) Name of the product service for which the resource is created.<br>    For example, backend, frontend, middleware etc. | `string` | `"ecs"` | no |
 | <a name="input_environment"></a> [environment](#input\_environment) | Environment in which the resource should be provisioned like dev, qa, prod etc. | `string` | `"dev"` | no |
 | <a name="input_environment_number"></a> [environment\_number](#input\_environment\_number) | The environment count for the respective environment. Defaults to 000. Increments in value of 1 | `string` | `"000"` | no |
 | <a name="input_resource_number"></a> [resource\_number](#input\_resource\_number) | The resource count for the respective resource. Defaults to 000. Increments in value of 1 | `string` | `"000"` | no |
 | <a name="input_region"></a> [region](#input\_region) | AWS Region in which the infra needs to be provisioned | `string` | `"us-east-2"` | no |
-| <a name="input_resource_names_map"></a> [resource\_names\_map](#input\_resource\_names\_map) | A map of key to resource\_name that will be used by tf-launch-module\_library-resource\_name to generate resource names | <pre>map(object({<br>    name       = string<br>    max_length = optional(number, 60)<br>  }))</pre> | <pre>{<br>  "acm": {<br>    "max_length": 60,<br>    "name": "acm"<br>  },<br>  "alb": {<br>    "max_length": 31,<br>    "name": "alb"<br>  },<br>  "alb_http_listener": {<br>    "max_length": 60,<br>    "name": "http"<br>  },<br>  "alb_https_listener": {<br>    "max_length": 60,<br>    "name": "https"<br>  },<br>  "alb_sg": {<br>    "max_length": 60,<br>    "name": "alb-sg"<br>  },<br>  "alb_tg": {<br>    "max_length": 31,<br>    "name": "albtg"<br>  },<br>  "ecs_service": {<br>    "max_length": 60,<br>    "name": "svc"<br>  },<br>  "ecs_sg": {<br>    "max_length": 60,<br>    "name": "ecs-sg"<br>  },<br>  "ecs_task": {<br>    "max_length": 60,<br>    "name": "td"<br>  },<br>  "s3_config": {<br>    "max_length": 63,<br>    "name": "conf"<br>  },<br>  "s3_logs": {<br>    "max_length": 63,<br>    "name": "logs"<br>  },<br>  "task_exec_policy": {<br>    "max_length": 60,<br>    "name": "exec-plcy"<br>  },<br>  "task_exec_role": {<br>    "max_length": 60,<br>    "name": "exec-role"<br>  },<br>  "task_policy": {<br>    "max_length": 60,<br>    "name": "task-plcy"<br>  },<br>  "task_role": {<br>    "max_length": 60,<br>    "name": "task-role"<br>  },<br>  "vpc": {<br>    "max_length": 60,<br>    "name": "vpc"<br>  }<br>}</pre> | no |
+| <a name="input_resource_names_map"></a> [resource\_names\_map](#input\_resource\_names\_map) | A map of key to resource\_name that will be used by tf-launch-module\_library-resource\_name to generate resource names | <pre>map(object({<br>    name       = string<br>    max_length = optional(number, 60)<br>  }))</pre> | <pre>{<br>  "acm": {<br>    "max_length": 60,<br>    "name": "acm"<br>  },<br>  "alb": {<br>    "max_length": 31,<br>    "name": "alb"<br>  },<br>  "alb_http_listener": {<br>    "max_length": 60,<br>    "name": "http"<br>  },<br>  "alb_https_listener": {<br>    "max_length": 60,<br>    "name": "https"<br>  },<br>  "alb_sg": {<br>    "max_length": 60,<br>    "name": "albsg"<br>  },<br>  "alb_tg": {<br>    "max_length": 31,<br>    "name": "albtg"<br>  },<br>  "ecs_service": {<br>    "max_length": 60,<br>    "name": "svc"<br>  },<br>  "ecs_sg": {<br>    "max_length": 60,<br>    "name": "ecssg"<br>  },<br>  "ecs_task": {<br>    "max_length": 60,<br>    "name": "td"<br>  },<br>  "s3_config": {<br>    "max_length": 63,<br>    "name": "conf"<br>  },<br>  "s3_logs": {<br>    "max_length": 63,<br>    "name": "logs"<br>  },<br>  "task_exec_policy": {<br>    "max_length": 60,<br>    "name": "exec-plcy"<br>  },<br>  "task_exec_role": {<br>    "max_length": 60,<br>    "name": "exec-role"<br>  },<br>  "task_policy": {<br>    "max_length": 60,<br>    "name": "task-plcy"<br>  },<br>  "task_role": {<br>    "max_length": 60,<br>    "name": "task-role"<br>  },<br>  "vpc": {<br>    "max_length": 60,<br>    "name": "vpc"<br>  }<br>}</pre> | no |
 | <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | The VPC ID of the VPC where infrastructure will be provisioned | `string` | n/a | yes |
 | <a name="input_private_subnets"></a> [private\_subnets](#input\_private\_subnets) | List of private subnets | `list(string)` | n/a | yes |
 | <a name="input_public_subnets"></a> [public\_subnets](#input\_public\_subnets) | List of public subnets | `list(string)` | `[]` | no |
@@ -204,7 +201,7 @@ If `make check` target is successful, developer is good to commit the code to pr
 | <a name="input_ignore_changes_task_definition"></a> [ignore\_changes\_task\_definition](#input\_ignore\_changes\_task\_definition) | Lifecycle ignore policy for task definition. If true, terraform won't detect changes when task\_definition is changed outside of terraform | `bool` | `true` | no |
 | <a name="input_assign_public_ip"></a> [assign\_public\_ip](#input\_assign\_public\_ip) | If true, public IP will be assigned to this service task, else private IP | `bool` | `false` | no |
 | <a name="input_ignore_changes_desired_count"></a> [ignore\_changes\_desired\_count](#input\_ignore\_changes\_desired\_count) | Lifecycle ignore policy for desired\_count. If true, terraform won't detect changes when desired\_count is changed outside of terraform | `bool` | `true` | no |
-| <a name="input_task_cpu"></a> [task\_cpu](#input\_task\_cpu) | Amount of CPU to be allocated to the task | `number` | `512` | no |
+| <a name="input_task_cpu"></a> [task\_cpu](#input\_task\_cpu) | Amount of CPU to be allocated to the task | `string` | `512` | no |
 | <a name="input_task_memory"></a> [task\_memory](#input\_task\_memory) | Amount of Memory to be allocated to the task | `number` | `1024` | no |
 | <a name="input_health_check_grace_period_seconds"></a> [health\_check\_grace\_period\_seconds](#input\_health\_check\_grace\_period\_seconds) | Seconds to ignore failing load balancer health checks on newly instantiated tasks to prevent premature shutdown, up to 7200. Only valid for services configured to use load balancers | `number` | `0` | no |
 | <a name="input_deployment_minimum_healthy_percent"></a> [deployment\_minimum\_healthy\_percent](#input\_deployment\_minimum\_healthy\_percent) | The lower limit (as a percentage of `desired_count`) of the number of tasks that must remain running and healthy in a service during a deployment | `number` | `100` | no |
@@ -218,14 +215,12 @@ If `make check` target is successful, developer is good to commit the code to pr
 | <a name="input_service_discovery_container_name"></a> [service\_discovery\_container\_name](#input\_service\_discovery\_container\_name) | The container name used for service discovery. Should match the name in var.containers. Mandatory in case of multiple containers | `string` | `""` | no |
 | <a name="input_cloud_map_namespace_id"></a> [cloud\_map\_namespace\_id](#input\_cloud\_map\_namespace\_id) | Cloud Map Namespace ID | `string` | `""` | no |
 | <a name="input_service_discovery_service_name"></a> [service\_discovery\_service\_name](#input\_service\_discovery\_service\_name) | Name of the Service Discovery Service | `string` | `""` | no |
-| <a name="input_ecs_exec_role_managed_policy_arns"></a> [ecs\_exec\_role\_managed\_policy\_arns](#input\_ecs\_exec\_role\_managed\_policy\_arns) | A list (ARNs) of AWS managed policies to be attached to the ECS Task Exec role. | `list(string)` | `[]` | no |
-| <a name="input_ecs_role_managed_policy_arns"></a> [ecs\_role\_managed\_policy\_arns](#input\_ecs\_role\_managed\_policy\_arns) | A list (ARNs) of AWS managed policies to be attached to the ECS Task role. | `list(string)` | `[]` | no |
 | <a name="input_ecs_exec_role_custom_policy_json"></a> [ecs\_exec\_role\_custom\_policy\_json](#input\_ecs\_exec\_role\_custom\_policy\_json) | Custom policy to attach to ecs task execution role. Document must be valid json. | `string` | `""` | no |
 | <a name="input_ecs_role_custom_policy_json"></a> [ecs\_role\_custom\_policy\_json](#input\_ecs\_role\_custom\_policy\_json) | Custom policy to attach to ecs task role. Document must be valid json. | `string` | `""` | no |
 | <a name="input_create_config_bucket"></a> [create\_config\_bucket](#input\_create\_config\_bucket) | Whether to create a config s3 bucket to store configurations | `bool` | `false` | no |
 | <a name="input_config_objects"></a> [config\_objects](#input\_config\_objects) | A map of objects to be created in config\_bucket, where key is the object key in s3 bucket and value is the path of the file | `map(string)` | `{}` | no |
 | <a name="input_kms_s3_key_arn"></a> [kms\_s3\_key\_arn](#input\_kms\_s3\_key\_arn) | ARN of the AWS S3 key used for the config S3 bucket encryption | `string` | `""` | no |
-| <a name="input_tags"></a> [tags](#input\_tags) | A map of custom tags to be associated with the provisioned infrastructures. | `map` | `{}` | no |
+| <a name="input_tags"></a> [tags](#input\_tags) | A map of custom tags to be associated with the provisioned infrastructures. | `map(string)` | `{}` | no |
 
 ## Outputs
 
