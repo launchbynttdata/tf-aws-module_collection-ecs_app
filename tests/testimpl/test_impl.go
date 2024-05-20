@@ -42,6 +42,17 @@ func TestDoesEcsAppExist(t *testing.T, ctx types.TestContext) {
 		require.Equal(t, ecsServiceArn, *output.Services[0].ServiceArn, "Expected service ARN to match")
 		require.Equal(t, ecsServiceName, *output.Services[0].ServiceName, "Expected service name to match")
 	})
+
+	t.Run("TestDoesTaskDefinitionExist", func(t *testing.T) {
+		ecsTaskDefinitionArn := terraform.Output(t, ctx.TerratestTerraformOptions(), "ecs_task_definition_arn")
+
+		output, err := ecsClient.DescribeTaskDefinition(context.TODO(), &ecs.DescribeTaskDefinitionInput{TaskDefinition: &ecsTaskDefinitionArn})
+		if err != nil {
+			t.Errorf("Error getting task definition description: %v", err)
+		}
+
+		require.Equal(t, ecsTaskDefinitionArn, *output.TaskDefinition.TaskDefinitionArn, "Expected task definition ARN to match")
+	})
 }
 
 func GetAWSConfig(t *testing.T) (cfg aws.Config) {
