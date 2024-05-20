@@ -42,6 +42,10 @@ output "service_discovery_service_id" {
   value = module.ecs_app.service_discovery_service_id
 }
 
+output "service_discovery_service_arn" {
+  value = module.ecs_app.service_discovery_service_arn
+}
+
 output "namespace_id" {
   value = module.ecs_platform.namespace_id
 }
@@ -68,4 +72,8 @@ output "ecs_task_definition_arn" {
 
 output "s3_logs_arn" {
   value = module.ecs_app.s3_logs_arn
+}
+
+output "s3_logs_id" {
+  value = module.ecs_app.s3_logs_id
 }

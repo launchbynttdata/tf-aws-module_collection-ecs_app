@@ -2,12 +2,14 @@ package common
 
 import (
 	"context"
+	"strings"
 	"testing"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/ecs"
 	"github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2"
+	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/gruntwork-io/terratest/modules/terraform"
 
 	"github.com/launchbynttdata/lcaf-component-terratest/types"
@@ -20,6 +22,7 @@ func TestDoesEcsAppExist(t *testing.T, ctx types.TestContext) {
 	ecsClusterArn := terraform.Output(t, ctx.TerratestTerraformOptions(), "ecs_cluster_arn")
 
 	elbClient := elasticloadbalancingv2.NewFromConfig(GetAWSConfig(t))
+	s3Client := s3.NewFromConfig(GetAWSConfig(t))
 
 	t.Run("TestDoesClusterExist", func(t *testing.T) {
 		output, err := ecsClient.DescribeClusters(context.TODO(), &ecs.DescribeClustersInput{Clusters: []string{ecsClusterArn}})
@@ -82,6 +85,33 @@ func TestDoesEcsAppExist(t *testing.T, ctx types.TestContext) {
 		require.Equal(t, targetGroupArn, *output.TargetGroups[0].TargetGroupArn, "Expected target group ARN to match")
 		require.Equal(t, targetGroupName, *output.TargetGroups[0].TargetGroupName, "Expected target group name to match")
 	})
+
+	t.Run("TestDoesLogsBucketExist", func(t *testing.T) {
+		s3BucketList, err := s3Client.ListBuckets(context.TODO(), &s3.ListBucketsInput{})
+		if err != nil {
+			t.Errorf("Failure during ListBuckets: %v", err)
+		}
+
+		bucketArn := terraform.Output(t, ctx.TerratestTerraformOptions(), "s3_logs_arn")
+		bucketName := strings.Split(bucketArn, ":")[5]
+		bucketFound := false
+		for _, bucket := range s3BucketList.Buckets {
+			if *bucket.Name == bucketName {
+				bucketFound = true
+				break
+			}
+		}
+		require.True(t, bucketFound, "S3 Logs Bucket not found")
+	})
+
+	/*
+		t.Run("TestServiceDiscoveryServiceExist", func(t *testing.T) {
+			ctx.EnabledOnlyForTests(t, "with_service_discovery")
+			serviceDiscoveryServiceName := terraform.Output(t, ctx.TerratestTerraformOptions(), "service_discovery_service_name")
+			serviceDiscoveryServiceArn := terraform.Output(t, ctx.TerratestTerraformOptions(), "service_discovery_service_arn")
+
+		})
+	*/
 }
 
 func GetAWSConfig(t *testing.T) (cfg aws.Config) {
