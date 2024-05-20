@@ -41,3 +41,15 @@ output "namespace_hosted_zone" {
 output "ecs_cluster_name" {
   value = module.ecs_platform.resource_names["ecs_cluster"]
 }
+
+output "ecs_service_arn" {
+  value = module.ecs_app.ecs_service_arn
+}
+
+output "ecs_service_name" {
+  value = module.ecs_app.ecs_service_name
+}
+
+output "ecs_task_definition_arn" {
+  value = module.ecs_app.ecs_task_definition_arn
+}

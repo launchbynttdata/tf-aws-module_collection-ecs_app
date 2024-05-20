@@ -28,6 +28,20 @@ func TestDoesEcsAppExist(t *testing.T, ctx types.TestContext) {
 		require.Equal(t, ecsClusterArn, *output.Clusters[0].ClusterArn, "Expected cluster ARN to match")
 		require.Equal(t, ecsClusterName, *output.Clusters[0].ClusterName, "Expected cluster name to match")
 	})
+
+	t.Run("TestDoesServiceExist", func(t *testing.T) {
+		ecsServiceName := terraform.Output(t, ctx.TerratestTerraformOptions(), "ecs_service_name")
+		ecsServiceArn := terraform.Output(t, ctx.TerratestTerraformOptions(), "ecs_service_arn")
+
+		output, err := ecsClient.DescribeServices(context.TODO(), &ecs.DescribeServicesInput{Cluster: &ecsClusterArn, Services: []string{ecsServiceArn}})
+		if err != nil {
+			t.Errorf("Error getting service description: %v", err)
+		}
+
+		require.Equal(t, 1, len(output.Services), "Expected 1 service to be returned")
+		require.Equal(t, ecsServiceArn, *output.Services[0].ServiceArn, "Expected service ARN to match")
+		require.Equal(t, ecsServiceName, *output.Services[0].ServiceName, "Expected service name to match")
+	})
 }
 
 func GetAWSConfig(t *testing.T) (cfg aws.Config) {

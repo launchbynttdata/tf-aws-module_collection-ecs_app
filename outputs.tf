@@ -54,3 +54,18 @@ output "config_bucket_name" {
   description = "ID of the config S3 bucket"
   value       = var.create_config_bucket ? module.resource_names["s3_config"].recommended_per_length_restriction : ""
 }
+
+output "ecs_service_arn" {
+  description = "ECS Service ARN"
+  value       = module.ecs_alb_service_task.service_arn
+}
+
+output "ecs_service_name" {
+  description = "ECS Service name"
+  value       = module.ecs_alb_service_task.service_name
+}
+
+output "ecs_task_definition_arn" {
+  description = "ECS task definition ARN"
+  value       = module.ecs_alb_service_task.task_definition_arn
+}
