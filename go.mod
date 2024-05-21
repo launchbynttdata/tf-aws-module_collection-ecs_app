@@ -8,6 +8,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/ecs v1.41.9
 	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2 v1.31.0
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.54.2
+	github.com/aws/aws-sdk-go-v2/service/servicediscovery v1.27.6
 	github.com/gruntwork-io/terratest v0.46.14
 	github.com/launchbynttdata/lcaf-component-terratest v1.0.4
 	github.com/stretchr/testify v1.9.0

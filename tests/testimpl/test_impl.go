@@ -10,6 +10,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ecs"
 	"github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
+	"github.com/aws/aws-sdk-go-v2/service/servicediscovery"
 	"github.com/gruntwork-io/terratest/modules/terraform"
 
 	"github.com/launchbynttdata/lcaf-component-terratest/types"
@@ -23,6 +24,7 @@ func TestDoesEcsAppExist(t *testing.T, ctx types.TestContext) {
 
 	elbClient := elasticloadbalancingv2.NewFromConfig(GetAWSConfig(t))
 	s3Client := s3.NewFromConfig(GetAWSConfig(t))
+	servicediscoveryClient := servicediscovery.NewFromConfig(GetAWSConfig(t))
 
 	t.Run("TestDoesClusterExist", func(t *testing.T) {
 		output, err := ecsClient.DescribeClusters(context.TODO(), &ecs.DescribeClustersInput{Clusters: []string{ecsClusterArn}})
@@ -104,14 +106,20 @@ func TestDoesEcsAppExist(t *testing.T, ctx types.TestContext) {
 		require.True(t, bucketFound, "S3 Logs Bucket not found")
 	})
 
-	/*
-		t.Run("TestServiceDiscoveryServiceExist", func(t *testing.T) {
-			ctx.EnabledOnlyForTests(t, "with_service_discovery")
-			serviceDiscoveryServiceName := terraform.Output(t, ctx.TerratestTerraformOptions(), "service_discovery_service_name")
-			serviceDiscoveryServiceArn := terraform.Output(t, ctx.TerratestTerraformOptions(), "service_discovery_service_arn")
+	t.Run("TestServiceDiscoveryServiceExist", func(t *testing.T) {
+		ctx.EnabledOnlyForTests(t, "with_service_discovery")
+		serviceDiscoveryServiceID := terraform.Output(t, ctx.TerratestTerraformOptions(), "service_discovery_service_id")
+		serviceDiscoveryServiceArn := terraform.Output(t, ctx.TerratestTerraformOptions(), "service_discovery_service_arn")
 
-		})
-	*/
+		output, err := servicediscoveryClient.GetService(context.TODO(), &servicediscovery.GetServiceInput{Id: &serviceDiscoveryServiceID})
+		if err != nil {
+			t.Errorf("Error getting service discovery service description: %v", err)
+		}
+
+		require.Equal(t, serviceDiscoveryServiceArn, *output.Service.Arn, "Expected service discovery service ARN to match")
+		require.Equal(t, serviceDiscoveryServiceID, *output.Service.Id, "Expected service discovery service ID to match")
+
+	})
 }
 
 func GetAWSConfig(t *testing.T) (cfg aws.Config) {
