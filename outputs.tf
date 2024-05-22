@@ -30,6 +30,16 @@ output "alb_dns_records" {
   value       = try(module.alb_dns_record[0].record_fqdns, "")
 }
 
+output "alb_target_group_arns" {
+  description = "ARNs of the ALB Target Groups"
+  value       = module.alb.target_group_arns
+}
+
+output "alb_target_group_names" {
+  description = "Names of the ALB Target Groups"
+  value       = module.alb.target_group_names
+}
+
 output "s3_logs_arn" {
   description = "ARN of S3 bucket for logs"
   value       = try(module.s3_bucket[0].s3_bucket_arn, "")
@@ -53,4 +63,19 @@ output "service_discovery_service_id" {
 output "config_bucket_name" {
   description = "ID of the config S3 bucket"
   value       = var.create_config_bucket ? module.resource_names["s3_config"].recommended_per_length_restriction : ""
+}
+
+output "ecs_service_arn" {
+  description = "ECS Service ARN"
+  value       = module.ecs_alb_service_task.service_arn
+}
+
+output "ecs_service_name" {
+  description = "ECS Service name"
+  value       = module.ecs_alb_service_task.service_name
+}
+
+output "ecs_task_definition_arn" {
+  description = "ECS task definition ARN"
+  value       = module.ecs_alb_service_task.task_definition_arn
 }

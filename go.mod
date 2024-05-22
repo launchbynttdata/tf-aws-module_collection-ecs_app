@@ -3,9 +3,12 @@ module github.com/launchbynttdata/tf-aws-module_collection-ecs_app
 go 1.21
 
 require (
-	github.com/aws/aws-sdk-go-v2 v1.26.2
+	github.com/aws/aws-sdk-go-v2 v1.27.0
 	github.com/aws/aws-sdk-go-v2/config v1.27.14
 	github.com/aws/aws-sdk-go-v2/service/ecs v1.41.9
+	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2 v1.31.0
+	github.com/aws/aws-sdk-go-v2/service/s3 v1.54.2
+	github.com/aws/aws-sdk-go-v2/service/servicediscovery v1.27.6
 	github.com/gruntwork-io/terratest v0.46.14
 	github.com/launchbynttdata/lcaf-component-terratest v1.0.4
 	github.com/stretchr/testify v1.9.0
@@ -20,13 +23,17 @@ require (
 	github.com/agext/levenshtein v1.2.3 // indirect
 	github.com/apparentlymart/go-textseg/v13 v13.0.0 // indirect
 	github.com/aws/aws-sdk-go v1.44.122 // indirect
+	github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.6.2 // indirect
 	github.com/aws/aws-sdk-go-v2/credentials v1.17.14 // indirect
 	github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.16.2 // indirect
-	github.com/aws/aws-sdk-go-v2/internal/configsources v1.3.6 // indirect
-	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.6.6 // indirect
+	github.com/aws/aws-sdk-go-v2/internal/configsources v1.3.7 // indirect
+	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.6.7 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/ini v1.8.0 // indirect
+	github.com/aws/aws-sdk-go-v2/internal/v4a v1.3.7 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.11.2 // indirect
-	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.11.8 // indirect
+	github.com/aws/aws-sdk-go-v2/service/internal/checksum v1.3.9 // indirect
+	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.11.9 // indirect
+	github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.17.7 // indirect
 	github.com/aws/aws-sdk-go-v2/service/sso v1.20.7 // indirect
 	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.24.1 // indirect
 	github.com/aws/aws-sdk-go-v2/service/sts v1.28.8 // indirect

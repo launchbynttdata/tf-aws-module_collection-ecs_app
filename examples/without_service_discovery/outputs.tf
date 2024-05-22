@@ -26,8 +26,24 @@ output "alb_dns" {
   value = module.ecs_app.alb_dns
 }
 
+output "alb_arn" {
+  value = module.ecs_app.alb_arn
+}
+
+output "alb_target_group_arn" {
+  value = module.ecs_app.alb_target_group_arns[0]
+}
+
+output "alb_target_group_name" {
+  value = module.ecs_app.alb_target_group_names[0]
+}
+
 output "service_discovery_service_id" {
   value = module.ecs_app.service_discovery_service_id
+}
+
+output "service_discovery_service_arn" {
+  value = module.ecs_app.service_discovery_service_arn
 }
 
 output "namespace_id" {
@@ -40,4 +56,24 @@ output "namespace_hosted_zone" {
 
 output "ecs_cluster_name" {
   value = module.ecs_platform.resource_names["ecs_cluster"]
+}
+
+output "ecs_service_arn" {
+  value = module.ecs_app.ecs_service_arn
+}
+
+output "ecs_service_name" {
+  value = module.ecs_app.ecs_service_name
+}
+
+output "ecs_task_definition_arn" {
+  value = module.ecs_app.ecs_task_definition_arn
+}
+
+output "s3_logs_arn" {
+  value = module.ecs_app.s3_logs_arn
+}
+
+output "s3_logs_id" {
+  value = module.ecs_app.s3_logs_id
 }
