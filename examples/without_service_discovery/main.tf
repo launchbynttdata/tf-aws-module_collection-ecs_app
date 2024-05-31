@@ -1,28 +1,11 @@
 
 data "aws_caller_identity" "default" {}
 
-module "vpc" {
-  source  = "terraform-aws-modules/vpc/aws"
-  version = "~> 5.1.1"
-
-  name                 = var.vpc_name
-  cidr                 = var.vpc_cidr
-  private_subnets      = var.private_subnets
-  azs                  = var.availability_zones
-  enable_dns_hostnames = true
-  enable_dns_support   = true
-
-  tags = var.tags
-}
-
 module "ecs_platform" {
-  source = "git::https://github.com/launchbynttdata/tf-aws-module_collection-ecs_platform.git?ref=1.0.0"
+  source = "git::https://github.com/launchbynttdata/tf-aws-module_collection-ecs_platform.git?ref=feature/add-vpc"
 
-  vpc_id                     = module.vpc.vpc_id
-  private_subnets            = module.vpc.private_subnets
   gateway_vpc_endpoints      = var.gateway_vpc_endpoints
   interface_vpc_endpoints    = var.interface_vpc_endpoints
-  route_table_ids            = concat([module.vpc.default_route_table_id], module.vpc.private_route_table_ids)
   logical_product_family     = var.logical_product_family
   logical_product_service    = var.logical_product_service
   vpce_security_group        = var.vpce_security_group
@@ -33,6 +16,12 @@ module "ecs_platform" {
   resource_number            = var.resource_number
   container_insights_enabled = var.container_insights_enabled
   namespace_name             = var.namespace_name
+  vpc_name                   = var.vpc_name
+  vpc_cidr                   = var.vpc_cidr
+  private_subnet_cidr_ranges = var.private_subnet_cidr_ranges
+  availability_zones         = var.availability_zones
+  create_vpc                 = var.create_vpc
+
 
   tags = var.tags
 }
@@ -40,7 +29,7 @@ module "ecs_platform" {
 # Number of ECRs should be same as number of containers in the task definition
 module "ecr" {
   source  = "terraform-aws-modules/ecr/aws"
-  version = "~> 1.6.0"
+  version = "~> 2.2.1"
 
   repository_name          = var.ecr_repo_name
   attach_repository_policy = false
@@ -76,8 +65,8 @@ module "ecs_app" {
   resource_number         = var.resource_number
   resource_names_map      = var.resource_names_map
 
-  vpc_id                 = module.vpc.vpc_id
-  private_subnets        = module.vpc.private_subnets
+  vpc_id                 = module.ecs_platform.vpc_id
+  private_subnets        = module.ecs_platform.private_subnet_ids
   ecs_svc_security_group = var.ecs_svc_sg
   alb_sg                 = var.alb_sg
   is_internal            = var.is_internal

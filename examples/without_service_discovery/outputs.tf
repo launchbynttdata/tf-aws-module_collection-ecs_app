@@ -19,7 +19,7 @@ output "ecr_url" {
 }
 
 output "vpc_id" {
-  value = module.vpc.vpc_id
+  value = module.ecs_platform.vpc_id
 }
 
 output "alb_dns" {

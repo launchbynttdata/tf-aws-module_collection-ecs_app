@@ -302,7 +302,6 @@ module "ecs_task_policy" {
   iam_source_policy_documents = [var.ecs_role_custom_policy_json]
 }
 
-
 # ECS Service
 module "ecs_alb_service_task" {
   source  = "cloudposse/ecs-alb-service-task/aws"
