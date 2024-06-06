@@ -59,10 +59,6 @@ resource_names_map = {
   }
 }
 
-vpc_cidr                   = "10.2.0.0/16"
-private_subnet_cidr_ranges = ["10.2.1.0/24", "10.2.2.0/24", "10.2.3.0/24"]
-availability_zones         = ["us-east-2a", "us-east-2b", "us-east-2c"]
-
 interface_vpc_endpoints = {
   ecrdkr = {
     service_name        = "ecr.dkr"
@@ -165,3 +161,10 @@ tags = {
 }
 
 create_vpc = true
+vpc = {
+  vpc_name                   = "test-vpc-015935234"
+  vpc_cidr                   = "10.1.0.0/16"
+  private_subnet_cidr_ranges = ["10.1.1.0/24", "10.1.2.0/24", "10.1.3.0/24"]
+  public_subnet_cidr_ranges  = []
+  availability_zones         = ["us-east-2a", "us-east-2b", "us-east-2c"]
+}

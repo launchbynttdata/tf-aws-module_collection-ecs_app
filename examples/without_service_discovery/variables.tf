@@ -88,26 +88,15 @@ variable "resource_names_map" {
 }
 
 ### VPC related variables
-variable "vpc_name" {
-  type    = string
-  default = "test-vpc-015935234"
-}
-
-variable "vpc_cidr" {
-  type    = string
-  default = "10.1.0.0/16"
-}
-
-variable "private_subnet_cidr_ranges" {
-  description = "List of private subnet cidrs"
-  type        = list(string)
-  default     = ["10.1.1.0/24", "10.1.2.0/24", "10.1.3.0/24"]
-}
-
-variable "availability_zones" {
-  description = "List of availability zones for the VPC"
-  type        = list(string)
-  default     = ["us-east-2a", "us-east-2b", "us-east-2c"]
+variable "vpc" {
+  description = "VPC related variables"
+  type = object({
+    vpc_name                   = string
+    vpc_cidr                   = string
+    private_subnet_cidr_ranges = list(string)
+    public_subnet_cidr_ranges  = optional(list(string), [])
+    availability_zones         = list(string)
+  })
 }
 
 variable "create_vpc" {

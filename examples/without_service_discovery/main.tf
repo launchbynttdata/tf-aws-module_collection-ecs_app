@@ -2,7 +2,7 @@
 data "aws_caller_identity" "default" {}
 
 module "ecs_platform" {
-  source = "git::https://github.com/launchbynttdata/tf-aws-module_collection-ecs_platform.git?ref=feature/add-vpc"
+  source = "git::https://github.com/launchbynttdata/tf-aws-module_collection-ecs_platform.git?ref=1.1.0"
 
   gateway_vpc_endpoints      = var.gateway_vpc_endpoints
   interface_vpc_endpoints    = var.interface_vpc_endpoints
@@ -16,14 +16,9 @@ module "ecs_platform" {
   resource_number            = var.resource_number
   container_insights_enabled = var.container_insights_enabled
   namespace_name             = var.namespace_name
-  vpc_name                   = var.vpc_name
-  vpc_cidr                   = var.vpc_cidr
-  private_subnet_cidr_ranges = var.private_subnet_cidr_ranges
-  availability_zones         = var.availability_zones
   create_vpc                 = var.create_vpc
-
-
-  tags = var.tags
+  vpc                        = var.vpc
+  tags                       = var.tags
 }
 
 # Number of ECRs should be same as number of containers in the task definition
