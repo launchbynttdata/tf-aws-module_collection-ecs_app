@@ -133,7 +133,7 @@ If `make check` target is successful, developer is good to commit the code to pr
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.49.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.52.0 |
 
 ## Modules
 
@@ -220,6 +220,7 @@ If `make check` target is successful, developer is good to commit the code to pr
 | <a name="input_create_config_bucket"></a> [create\_config\_bucket](#input\_create\_config\_bucket) | Whether to create a config s3 bucket to store configurations | `bool` | `false` | no |
 | <a name="input_config_objects"></a> [config\_objects](#input\_config\_objects) | A map of objects to be created in config\_bucket, where key is the object key in s3 bucket and value is the path of the file | `map(string)` | `{}` | no |
 | <a name="input_kms_s3_key_arn"></a> [kms\_s3\_key\_arn](#input\_kms\_s3\_key\_arn) | ARN of the AWS S3 key used for the config S3 bucket encryption | `string` | `""` | no |
+| <a name="input_runtime_platform"></a> [runtime\_platform](#input\_runtime\_platform) | Zero or one runtime platform configurations that containers in your task may use.<br>Map of strings with optional keys `operating_system_family` and `cpu_architecture`.<br>See `runtime_platform` docs https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecs_task_definition#runtime_platform | `list(map(string))` | `[]` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | A map of custom tags to be associated with the provisioned infrastructures. | `map(string)` | `{}` | no |
 
 ## Outputs

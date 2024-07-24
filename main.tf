@@ -340,6 +340,7 @@ module "ecs_alb_service_task" {
   force_new_deployment = var.force_new_deployment
   redeploy_on_apply    = var.redeploy_on_apply
   service_registries   = local.service_registries
+  runtime_platform     = var.runtime_platform
 
   ecs_load_balancers = [
     {

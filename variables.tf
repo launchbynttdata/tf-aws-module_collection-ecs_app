@@ -513,6 +513,17 @@ variable "kms_s3_key_arn" {
   default     = ""
 }
 
+variable "runtime_platform" {
+  type        = list(map(string))
+  description = <<-EOT
+    Zero or one runtime platform configurations that containers in your task may use.
+    Map of strings with optional keys `operating_system_family` and `cpu_architecture`.
+    See `runtime_platform` docs https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecs_task_definition#runtime_platform
+    EOT
+  default     = []
+}
+
+
 variable "tags" {
   description = "A map of custom tags to be associated with the provisioned infrastructures."
   type        = map(string)
