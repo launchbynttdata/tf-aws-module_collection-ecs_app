@@ -308,6 +308,17 @@ variable "print_container_json" {
   type        = bool
   default     = false
 }
+variable "app_environment" {
+  description = "Environment variables to be injected into the application containers"
+  type        = map(string)
+  default     = {}
+}
+
+variable "app_secrets" {
+  description = "Secrets to be injected into the application containers. Map of secret Manager ARNs"
+  type        = map(string)
+  default     = {}
+}
 
 variable "containers" {
   description = "Specifications for containers to be launched in ECS for this task"

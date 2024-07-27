@@ -224,33 +224,32 @@ module "alb" {
 module "container_definitions" {
   source = "git::https://github.com/cloudposse/terraform-aws-ecs-container-definition.git?ref=0.58.2"
 
-  count = length(var.containers)
+  for_each = length(local.containers_map) > 0 ? local.containers_map : {}
 
-  command                      = lookup(var.containers[count.index], "command", null)
-  container_name               = var.containers[count.index].name
-  container_image              = var.containers[count.index].image_tag
-  container_memory             = var.containers[count.index].memory
-  container_memory_reservation = var.containers[count.index].memory_reservation
-  container_cpu                = var.containers[count.index].cpu
-  essential                    = var.containers[count.index].essential
-  readonly_root_filesystem     = var.containers[count.index].readonly_root_filesystem
-  map_environment              = merge(var.containers[count.index].environment, try(local.additional_environment_map[var.containers[count.index].name], {}))
-  map_secrets                  = var.containers[count.index].secrets
-  mount_points                 = lookup(var.containers[count.index], "mount_points", [])
-  port_mappings                = var.containers[count.index].port_mappings
-  healthcheck                  = lookup(var.containers[count.index], "healthcheck", [])
-  user                         = lookup(var.containers[count.index], "user", [])
-  container_depends_on         = lookup(var.containers[count.index], "container_depends_on", [])
-  log_configuration = var.containers[count.index].log_configuration == null ? {
+  command                      = each.value.command
+  container_name               = each.value.name
+  container_image              = each.value.image_tag
+  container_memory             = each.value.memory
+  container_memory_reservation = each.value.memory_reservation
+  container_cpu                = each.value.cpu
+  essential                    = each.value.essential
+  readonly_root_filesystem     = each.value.readonly_root_filesystem
+  map_environment              = each.value.environment
+  map_secrets                  = each.value.secrets
+  mount_points                 = each.value.mount_points
+  port_mappings                = each.value.port_mappings
+  healthcheck                  = each.value.healthcheck
+  user                         = each.value.user
+  container_depends_on         = each.value.container_depends_on
+  log_configuration = each.value.log_configuration == null ? {
     logDriver = "awslogs"
     options = {
       awslogs-group         = "/ecs/fargate/task/${module.resource_names["ecs_service"].standard}"
       awslogs-region        = var.region
       awslogs-create-group  = "true"
-      awslogs-stream-prefix = var.containers[count.index].name
+      awslogs-stream-prefix = each.value.name
     }
-  } : var.containers[count.index].log_configuration
-
+  } : each.value.log_configuration
 }
 
 module "service_discovery_service" {
