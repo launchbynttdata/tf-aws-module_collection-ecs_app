@@ -110,5 +110,26 @@ locals {
     }
   }
 
+  containers_map = {
+    for container in var.containers : container.name => {
+      name                     = container.name
+      image_tag                = container.image_tag
+      command                  = container.command
+      essential                = container.essential
+      cpu                      = container.cpu
+      memory                   = container.memory
+      memory_reservation       = container.memory_reservation
+      readonly_root_filesystem = container.readonly_root_filesystem
+      environment              = merge(container.environment, var.app_environment, try(local.additional_environment_map[container.name], {}))
+      secrets                  = merge(container.secrets, var.app_secrets)
+      mount_points             = container.mount_points
+      port_mappings            = container.port_mappings
+      healthcheck              = container.healthcheck
+      user                     = container.user
+      container_depends_on     = container.container_depends_on
+      log_configuration        = container.log_configuration
+    }
+  }
+
   tags = merge(local.default_tags, var.tags)
 }
