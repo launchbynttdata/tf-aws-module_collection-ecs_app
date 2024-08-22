@@ -228,7 +228,6 @@ module "container_definitions" {
 
   command                      = each.value.command
   container_name               = each.value.name
-  container_image              = each.value.image_tag
   container_memory             = each.value.memory
   container_memory_reservation = each.value.memory_reservation
   container_cpu                = each.value.cpu

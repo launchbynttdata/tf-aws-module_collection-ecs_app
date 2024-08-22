@@ -112,8 +112,6 @@ ecs_svc_sg = {
 containers = [
   {
     name = "backend"
-    # image_tag will be injected in locals.tf
-    # image_tag = ""
     log_configuration = {
       logDriver = "awslogs"
       options = {
@@ -134,6 +132,8 @@ containers = [
     }]
   }
 ]
+
+# app_image = ""
 
 target_groups = [
   {

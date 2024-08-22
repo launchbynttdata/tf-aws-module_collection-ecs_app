@@ -122,6 +122,7 @@ locals {
       readonly_root_filesystem = container.readonly_root_filesystem
       environment              = merge(container.environment, var.app_environment, try(local.additional_environment_map[container.name], {}))
       secrets                  = merge(container.secrets, var.app_secrets)
+      container_image          = var.app_image
       mount_points             = container.mount_points
       port_mappings            = container.port_mappings
       healthcheck              = container.healthcheck
