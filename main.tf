@@ -228,6 +228,7 @@ module "container_definitions" {
 
   command                      = each.value.command
   container_name               = each.value.name
+  container_image              = local.container_image
   container_memory             = each.value.memory
   container_memory_reservation = each.value.memory_reservation
   container_cpu                = each.value.cpu
