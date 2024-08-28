@@ -329,7 +329,6 @@ variable "containers" {
   description = "Specifications for containers to be launched in ECS for this task"
   type = list(object({
     name                     = string
-    image_tag                = string
     command                  = optional(list(string), [])
     essential                = optional(bool, false)
     cpu                      = optional(number, 0)
