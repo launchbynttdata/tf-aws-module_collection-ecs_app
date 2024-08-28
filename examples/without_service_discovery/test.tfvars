@@ -134,8 +134,6 @@ containers = [
   }
 ]
 
-# app_image = ""
-
 target_groups = [
   {
     backend_protocol = "HTTP"
