@@ -171,6 +171,12 @@ variable "image_tag" {
   type        = string
   default     = "0.0.1"
 }
+
+variable "app_image" {
+  description = "Image to be used for the application container"
+  type        = string
+}
+
 ### ECS Task related
 
 variable "ecs_svc_sg" {

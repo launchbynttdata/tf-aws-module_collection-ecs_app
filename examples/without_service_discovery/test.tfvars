@@ -1,6 +1,7 @@
 logical_product_service = "dso101"
 # Ensure you have a profile by this name in your ~/.aws/config file
 aws_profile = "launch-sandbox-admin"
+app_image   = "<replace>"
 
 resource_names_map = {
   # Platform

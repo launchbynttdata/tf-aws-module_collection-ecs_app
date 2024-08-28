@@ -113,7 +113,7 @@ locals {
   containers_map = {
     for container in var.containers : container.name => {
       name                     = container.name
-      image_tag                = container.image_tag
+      image_tag                = var.app_image
       command                  = container.command
       essential                = container.essential
       cpu                      = container.cpu
@@ -122,7 +122,6 @@ locals {
       readonly_root_filesystem = container.readonly_root_filesystem
       environment              = merge(container.environment, var.app_environment, try(local.additional_environment_map[container.name], {}))
       secrets                  = merge(container.secrets, var.app_secrets)
-      container_image          = var.app_image
       mount_points             = container.mount_points
       port_mappings            = container.port_mappings
       healthcheck              = container.healthcheck
