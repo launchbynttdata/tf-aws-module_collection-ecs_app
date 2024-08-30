@@ -1,7 +1,7 @@
 logical_product_service = "dso102"
 # Ensure you have a profile by this name in your ~/.aws/config file
 aws_profile = "launch-sandbox-admin"
-app_image   = "<replace>"
+app_image   = "public.ecr.aws/nginx/nginx:latest"
 
 resource_names_map = {
   # Platform
