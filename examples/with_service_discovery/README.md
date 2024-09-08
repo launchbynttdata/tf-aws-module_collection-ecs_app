@@ -31,7 +31,7 @@ This module will provision a ECS Service for a corresponding application. It wil
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.49.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.64.0 |
 | <a name="provider_terraform"></a> [terraform](#provider\_terraform) | n/a |
 
 ## Modules
@@ -73,6 +73,7 @@ This module will provision a ECS Service for a corresponding application. It wil
 | <a name="input_repo_force_delete"></a> [repo\_force\_delete](#input\_repo\_force\_delete) | If true, terraform is able to delete the ECR that contains images | `bool` | `true` | no |
 | <a name="input_aws_profile"></a> [aws\_profile](#input\_aws\_profile) | AWS Profile to login to AWS to push to ECR Repo | `string` | n/a | yes |
 | <a name="input_image_tag"></a> [image\_tag](#input\_image\_tag) | Docker image tag for primary container | `string` | `"0.0.1"` | no |
+| <a name="input_app_image"></a> [app\_image](#input\_app\_image) | Image to be used for the application container | `string` | n/a | yes |
 | <a name="input_ecs_svc_sg"></a> [ecs\_svc\_sg](#input\_ecs\_svc\_sg) | Security Group for the ECS Service. Allows traffic from the ALB Security group | <pre>object({<br>    ingress_rules            = optional(list(string))<br>    ingress_cidr_blocks      = optional(list(string))<br>    ingress_with_cidr_blocks = optional(list(map(string)))<br>    egress_rules             = optional(list(string))<br>    egress_cidr_blocks       = optional(list(string))<br>    egress_with_cidr_blocks  = optional(list(map(string)))<br>    ingress_with_sg          = optional(list(map(string)))<br>    egress_with_sg           = optional(list(map(string)))<br>  })</pre> | n/a | yes |
 | <a name="input_alb_sg"></a> [alb\_sg](#input\_alb\_sg) | Security Group for the ALB | <pre>object({<br>    description         = optional(string)<br>    ingress_rules       = optional(list(string))<br>    ingress_cidr_blocks = optional(list(string))<br>    egress_rules        = optional(list(string))<br>    egress_cidr_blocks  = optional(list(string))<br>  })</pre> | n/a | yes |
 | <a name="input_target_groups"></a> [target\_groups](#input\_target\_groups) | List of target groups for the ALB | <pre>list(object({<br>    # Need to use name_prefix instead of name as the lifecycle property create_before_destroy is set<br>    name_prefix      = optional(string, "albtg")<br>    backend_protocol = optional(string, "HTTP")<br>    backend_port     = optional(number, 80)<br>    target_type      = optional(string, "ip")<br>  }))</pre> | n/a | yes |

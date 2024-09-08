@@ -108,5 +108,7 @@ module "ecs_app" {
   service_discovery_service_name   = var.service_discovery_service_name
   cloud_map_namespace_id           = module.ecs_platform.namespace_id
 
+  app_image = var.app_image
+
   tags = var.tags
 }

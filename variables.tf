@@ -320,11 +320,15 @@ variable "app_secrets" {
   default     = {}
 }
 
+variable "app_image" {
+  description = "Image to be used for the application container"
+  type        = string
+}
+
 variable "containers" {
   description = "Specifications for containers to be launched in ECS for this task"
   type = list(object({
     name                     = string
-    image_tag                = string
     command                  = optional(list(string), [])
     essential                = optional(bool, false)
     cpu                      = optional(number, 0)

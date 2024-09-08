@@ -113,7 +113,7 @@ locals {
   containers_map = {
     for container in var.containers : container.name => {
       name                     = container.name
-      image_tag                = container.image_tag
+      image_tag                = var.app_image
       command                  = container.command
       essential                = container.essential
       cpu                      = container.cpu

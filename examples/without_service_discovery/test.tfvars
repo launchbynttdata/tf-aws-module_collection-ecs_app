@@ -1,6 +1,7 @@
 logical_product_service = "dso101"
 # Ensure you have a profile by this name in your ~/.aws/config file
 aws_profile = "launch-sandbox-admin"
+app_image   = "public.ecr.aws/nginx/nginx:latest"
 
 resource_names_map = {
   # Platform
@@ -112,8 +113,6 @@ ecs_svc_sg = {
 containers = [
   {
     name = "backend"
-    # image_tag will be injected in locals.tf
-    # image_tag = ""
     log_configuration = {
       logDriver = "awslogs"
       options = {
