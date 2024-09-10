@@ -24,14 +24,14 @@ This module will provision a ECS Service for a corresponding application. It wil
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.5.0, <= 1.5.5 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.0 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.64.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.66.0 |
 | <a name="provider_terraform"></a> [terraform](#provider\_terraform) | n/a |
 
 ## Modules
@@ -39,7 +39,7 @@ This module will provision a ECS Service for a corresponding application. It wil
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_ecs_platform"></a> [ecs\_platform](#module\_ecs\_platform) | git::https://github.com/launchbynttdata/tf-aws-module_collection-ecs_platform.git | 1.1.0 |
-| <a name="module_ecr"></a> [ecr](#module\_ecr) | terraform-aws-modules/ecr/aws | ~> 2.2.1 |
+| <a name="module_ecr"></a> [ecr](#module\_ecr) | terraform.registry.launch.nttdata.com/module_collection/ecr/aws | ~> 1.0 |
 | <a name="module_ecs_app"></a> [ecs\_app](#module\_ecs\_app) | ../.. | n/a |
 
 ## Resources
@@ -70,7 +70,6 @@ This module will provision a ECS Service for a corresponding application. It wil
 | <a name="input_repo_force_delete"></a> [repo\_force\_delete](#input\_repo\_force\_delete) | If true, terraform is able to delete the ECR that contains images | `bool` | `true` | no |
 | <a name="input_aws_profile"></a> [aws\_profile](#input\_aws\_profile) | AWS Profile to login to AWS to push to ECR Repo | `string` | n/a | yes |
 | <a name="input_image_tag"></a> [image\_tag](#input\_image\_tag) | Docker image tag for primary container | `string` | `"0.0.1"` | no |
-| <a name="input_app_image"></a> [app\_image](#input\_app\_image) | Image to be used for the application container | `string` | n/a | yes |
 | <a name="input_ecs_svc_sg"></a> [ecs\_svc\_sg](#input\_ecs\_svc\_sg) | Security Group for the ECS Service. Allows traffic from the ALB Security group | <pre>object({<br>    ingress_rules            = optional(list(string))<br>    ingress_cidr_blocks      = optional(list(string))<br>    ingress_with_cidr_blocks = optional(list(map(string)))<br>    egress_rules             = optional(list(string))<br>    egress_cidr_blocks       = optional(list(string))<br>    egress_with_cidr_blocks  = optional(list(map(string)))<br>    ingress_with_sg          = optional(list(map(string)))<br>    egress_with_sg           = optional(list(map(string)))<br>  })</pre> | n/a | yes |
 | <a name="input_alb_sg"></a> [alb\_sg](#input\_alb\_sg) | Security Group for the ALB | <pre>object({<br>    description         = optional(string)<br>    ingress_rules       = optional(list(string))<br>    ingress_cidr_blocks = optional(list(string))<br>    egress_rules        = optional(list(string))<br>    egress_cidr_blocks  = optional(list(string))<br>  })</pre> | n/a | yes |
 | <a name="input_target_groups"></a> [target\_groups](#input\_target\_groups) | List of target groups for the ALB | <pre>list(object({<br>    # Need to use name_prefix instead of name as the lifecycle property create_before_destroy is set<br>    name_prefix      = optional(string, "albtg")<br>    backend_protocol = optional(string, "HTTP")<br>    backend_port     = optional(number, 80)<br>    target_type      = optional(string, "ip")<br>  }))</pre> | n/a | yes |

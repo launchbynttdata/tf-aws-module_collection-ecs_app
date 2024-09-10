@@ -123,19 +123,23 @@ variable "resource_names_map" {
       max_length = 60
     }
     task_exec_role = {
-      name       = "exec-role"
+      name       = "execrole"
       max_length = 60
     }
     task_role = {
-      name       = "task-role"
+      name       = "taskrole"
       max_length = 60
     }
     task_exec_policy = {
-      name       = "exec-plcy"
+      name       = "execplcy"
       max_length = 60
     }
     task_policy = {
-      name       = "task-plcy"
+      name       = "taskplcy"
+      max_length = 60
+    }
+    ecr = {
+      name       = "ecr"
       max_length = 60
     }
   }
@@ -321,7 +325,12 @@ variable "app_secrets" {
 }
 
 variable "app_image" {
-  description = "Image to be used for the application container"
+  description = <<EOT
+    Image to be used for the application container in the form of `<image>:<tag>`
+
+    When var.create_ecr_repo is true, this variable must be specified as
+    `<ACCOUNT_ID>.dkr.ecr.<AWS_REGION>.amazonaws.com/<var.ecr_repo_name>:<tag>`.
+  EOT
   type        = string
 }
 
@@ -538,6 +547,87 @@ variable "runtime_platform" {
   default     = []
 }
 
+## ECR related variables
+
+variable "create_ecr_repo" {
+  description = <<EOT
+    Whether to create an ECR repository for the application?
+    When create_ecr_repo=true, an ecr will be created as `<ACCOUNT_ID>.dkr.ecr.<AWS_REGION>.amazonaws.com/<var.ecr_repo_name>`
+    The very first apply is expected to fail, as the ECR repo will be empty. One needs to push an image to this repo and
+    then trigger the apply again.
+  EOT
+  type        = bool
+  default     = false
+}
+
+variable "ecr_repo_name" {
+  description = <<EOT
+    Name of the ECR repository.
+  EOT
+  type        = string
+  default     = null
+
+  validation {
+    condition     = var.ecr_repo_name == null || can(regex("^[a-z][a-z0-9-/]{1,254}[a-z0-9]$", var.ecr_repo_name))
+    error_message = "Name must be lowercase letters, numbers, or hyphens, and between 1 and 255 characters long."
+  }
+}
+
+variable "force_delete" {
+  type        = bool
+  default     = false
+  description = "Whether to delete the repository even if it contains images"
+}
+
+variable "image_tag_mutability" {
+  type        = string
+  default     = "MUTABLE"
+  description = "The tag mutability setting for the repository. Must be one of: `MUTABLE` or `IMMUTABLE`"
+
+  validation {
+    condition     = can(regex("^(IM)?MUTABLE$", var.image_tag_mutability))
+    error_message = "image_tag_mutability must be 'MUTABLE' or 'IMMUTABLE'."
+  }
+}
+
+variable "principals_full_access" {
+  type        = list(string)
+  default     = []
+  description = "Principal ARNs to provide with full access to the ECR"
+
+  validation {
+    condition     = alltrue([for v in var.principals_full_access : can(regex("^arn:aws:iam::[0-9]{12}:root$", v))])
+    error_message = "All elements of principals_full_access must be ARNs of the form 'arn:aws:iam::123456789012:root'."
+  }
+}
+
+variable "principals_pull_though_access" {
+  type        = list(string)
+  default     = []
+  description = "Principal ARNs to provide with pull though access to the ECR"
+
+  validation {
+    condition     = alltrue([for v in var.principals_pull_though_access : can(regex("^arn:aws:iam::[0-9]{12}:root$", v))])
+    error_message = "All elements of principals_pull_though_access must be ARNs of the form 'arn:aws:iam::123456789012:root'."
+  }
+}
+
+variable "principals_push_access" {
+  type        = list(string)
+  default     = []
+  description = "Principal ARNs to provide with push access to the ECR"
+
+  validation {
+    condition     = alltrue([for v in var.principals_push_access : can(regex("^arn:aws:iam::[0-9]{12}:root$", v))])
+    error_message = "All elements of principals_push_access must be ARNs of the form 'arn:aws:iam::123456789012:root'."
+  }
+}
+
+variable "scan_images_on_push" {
+  type        = bool
+  default     = true
+  description = "Indicates whether images are scanned after being pushed to the repository (true) or not (false)"
+}
 
 variable "tags" {
   description = "A map of custom tags to be associated with the provisioned infrastructures."

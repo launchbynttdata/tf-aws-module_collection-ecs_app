@@ -79,3 +79,8 @@ output "ecs_task_definition_arn" {
   description = "ECS task definition ARN"
   value       = module.ecs_alb_service_task.task_definition_arn
 }
+
+output "ecr_repository_url" {
+  description = "ECR Repository URL. Only valid when var.create_ecr_repo=true"
+  value       = try(module.ecr.repository_url, "")
+}
