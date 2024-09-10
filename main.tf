@@ -221,6 +221,24 @@ module "alb" {
   depends_on = [module.s3_bucket]
 }
 
+module "ecr" {
+  source  = "terraform.registry.launch.nttdata.com/module_collection/ecr/aws"
+  version = "~> 1.0"
+
+  count = var.create_ecr_repo ? 1 : 0
+
+  name                          = var.ecr_repo_name
+  scan_images_on_push           = var.scan_images_on_push
+  image_tag_mutability          = var.image_tag_mutability
+  principals_full_access        = var.principals_full_access
+  principals_pull_though_access = var.principals_pull_though_access
+  principals_push_access        = var.principals_push_access
+  force_delete                  = var.force_delete
+
+  tags = merge(local.tags, { resource_name = module.resource_names["ecr"].standard })
+
+}
+
 module "container_definitions" {
   source = "git::https://github.com/cloudposse/terraform-aws-ecs-container-definition.git?ref=0.58.2"
 
@@ -352,6 +370,8 @@ module "ecs_alb_service_task" {
   ]
 
   tags = merge(local.tags, { resource_name = module.resource_names["ecs_service"].standard })
+
+  depends_on = [module.ecr]
 }
 
 module "alb_dns_record" {

@@ -39,13 +39,14 @@ module "ecs_platform" {
 
 # Number of ECRs should be same as number of containers in the task definition
 module "ecr" {
-  source  = "terraform-aws-modules/ecr/aws"
-  version = "~> 1.6.0"
+  source  = "terraform.registry.launch.nttdata.com/module_collection/ecr/aws"
+  version = "~> 1.0"
 
-  repository_name          = var.ecr_repo_name
-  attach_repository_policy = false
-  create_lifecycle_policy  = false
-  repository_force_delete  = var.repo_force_delete
+  name                    = var.ecr_repo_name
+  scan_images_on_push     = false
+  image_tag_mutability    = "MUTABLE"
+  enable_lifecycle_policy = false
+  force_delete            = var.repo_force_delete
 
   tags = var.tags
 }
@@ -108,7 +109,9 @@ module "ecs_app" {
   service_discovery_service_name   = var.service_discovery_service_name
   cloud_map_namespace_id           = module.ecs_platform.namespace_id
 
-  app_image = var.app_image
+  app_image = "${module.ecr.repository_url}:${var.image_tag}"
 
   tags = var.tags
+
+  depends_on = [terraform_data.ecr_push, module.ecr]
 }

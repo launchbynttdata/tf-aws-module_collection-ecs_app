@@ -1,7 +1,6 @@
 logical_product_service = "dso102"
 # Ensure you have a profile by this name in your ~/.aws/config file
 aws_profile = "launch-sandbox-admin"
-app_image   = "public.ecr.aws/nginx/nginx:latest"
 
 resource_names_map = {
   # Platform
@@ -163,7 +162,6 @@ service_discovery_container_name = "backend"
 service_discovery_service_name   = "test1"
 
 tags = {
-  Purpose = "terratest examples"
+  Purpose = "terratest"
   Env     = "sandbox"
-  Team    = "dso"
 }
