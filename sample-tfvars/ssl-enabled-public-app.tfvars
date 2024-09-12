@@ -97,4 +97,4 @@ is_internal        = false
 load_balancer_type = "application"
 dns_zone_name      = "<dns_zone_name>"
 private_zone       = false
-additional_cnames  = ["<fddn-cnames"]
+additional_cnames  = ["<fqdn-cnames>"]
