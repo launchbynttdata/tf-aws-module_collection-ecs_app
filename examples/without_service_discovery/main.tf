@@ -2,7 +2,8 @@
 data "aws_caller_identity" "default" {}
 
 module "ecs_platform" {
-  source = "git::https://github.com/launchbynttdata/tf-aws-module_collection-ecs_platform.git?ref=1.1.0"
+  source  = "terraform.registry.launch.nttdata.com/module_collection/ecs_platform/aws"
+  version = "~> 1.1"
 
   gateway_vpc_endpoints      = var.gateway_vpc_endpoints
   interface_vpc_endpoints    = var.interface_vpc_endpoints

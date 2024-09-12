@@ -78,9 +78,11 @@ locals {
   alb_dns_records = {
     (module.resource_names["alb"].standard) = {
       type = "A"
+      name = module.resource_names["alb"].standard
       alias = {
-        name    = module.alb.lb_dns_name
-        zone_id = module.alb.lb_zone_id
+        name                   = module.alb.lb_dns_name
+        zone_id                = module.alb.lb_zone_id
+        evaluate_target_health = false
       }
     }
   }

@@ -26,8 +26,13 @@ output "alb_arn" {
 }
 
 output "alb_dns_records" {
-  description = "Custom DNS record for the ALB"
-  value       = try(module.alb_dns_record[0].record_fqdns, "")
+  description = "Custom DNS records for the ALB"
+  value       = try([for key, value in module.alb_dns_record[0].record_fqdns : value], [])
+}
+
+output "alb_additional_dns_names" {
+  description = "Additional DNS records for the ALB"
+  value       = flatten([for dns_record in module.additional_cnames : [for key, value in dns_record.record_fqdns : key]])
 }
 
 output "alb_target_group_arns" {
@@ -82,5 +87,5 @@ output "ecs_task_definition_arn" {
 
 output "ecr_repository_url" {
   description = "ECR Repository URL. Only valid when var.create_ecr_repo=true"
-  value       = try(module.ecr.repository_url, "")
+  value       = try(module.ecr[0].repository_url, "")
 }
