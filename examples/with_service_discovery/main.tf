@@ -16,7 +16,8 @@ module "vpc" {
 }
 
 module "ecs_platform" {
-  source = "git::https://github.com/launchbynttdata/tf-aws-module_collection-ecs_platform.git?ref=1.0.0"
+  source  = "terraform.registry.launch.nttdata.com/module_collection/ecs_platform/aws"
+  version = "~> 1.1"
 
   vpc_id                     = module.vpc.vpc_id
   private_subnets            = module.vpc.private_subnets

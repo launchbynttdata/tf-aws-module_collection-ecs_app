@@ -20,7 +20,8 @@ data "aws_route53_zone" "dns_zone" {
 
 # This module generates the resource-name of resources based on resource_type, logical_product_family, logical_product_service, env etc.
 module "resource_names" {
-  source = "git::https://github.com/launchbynttdata/tf-launch-module_library-resource_name.git?ref=1.0.0"
+  source  = "terraform.registry.launch.nttdata.com/module_library/resource_name/launch"
+  version = "~> 2.0"
 
   for_each = var.resource_names_map
 
@@ -35,7 +36,8 @@ module "resource_names" {
 }
 
 module "config_bucket" {
-  source = "git::https://github.com/launchbynttdata/tf-aws-module_collection-s3_bucket.git?ref=1.0.0"
+  source  = "terraform.registry.launch.nttdata.com/module_collection/s3_bucket/aws"
+  version = "~> 1.0"
 
   count = var.create_config_bucket ? 1 : 0
 
@@ -84,7 +86,7 @@ module "s3_bucket" {
 
 module "s3_bucket_objects" {
   source  = "terraform-aws-modules/s3-bucket/aws//modules/object"
-  version = "3.15.1"
+  version = "~> 3.15.1"
 
   # This module is only applicable if the config_bucket is created and managed by wrapper module
   for_each = var.create_config_bucket && length(var.config_objects) > 0 ? var.config_objects : {}
@@ -147,7 +149,6 @@ module "sg_ecs_service" {
 
 # Security Group for ALB
 module "sg_alb" {
-
   source  = "terraform-aws-modules/security-group/aws"
   version = "~> 4.17.1"
 
@@ -176,7 +177,7 @@ module "acm" {
 
   # First domain name must be < 64 chars
   domain_name               = "${module.resource_names["alb"].recommended_per_length_restriction}.${var.dns_zone_name}"
-  subject_alternative_names = concat(local.san, var.subject_alternate_names)
+  subject_alternative_names = concat(local.san, var.subject_alternate_names, var.additional_cnames)
   zone_id                   = data.aws_route53_zone.dns_zone[count.index].zone_id
 
   tags = merge(local.tags, { resource_name = module.resource_names["acm"].standard })
@@ -271,7 +272,8 @@ module "container_definitions" {
 }
 
 module "service_discovery_service" {
-  source = "git::https://github.com/launchbynttdata/tf-aws-module_primitive-service_discovery_service.git?ref=1.0.0"
+  source  = "terraform.registry.launch.nttdata.com/module_primitive/service_discovery_service/aws"
+  version = "~> 1.0"
 
   count = var.enable_service_discovery ? 1 : 0
 
@@ -375,10 +377,28 @@ module "ecs_alb_service_task" {
 }
 
 module "alb_dns_record" {
-  source = "git::https://github.com/launchbynttdata/tf-aws-module_primitive-dns_record.git?ref=1.0.0"
+  source  = "terraform.registry.launch.nttdata.com/module_primitive/dns_record/aws"
+  version = "~> 1.0"
 
   count = length(var.dns_zone_name) > 0 ? 1 : 0
 
-  zone_id = var.dns_zone_name
+  zone_id = data.aws_route53_zone.dns_zone[count.index].zone_id
   records = local.alb_dns_records
+}
+
+module "additional_cnames" {
+  source  = "terraform.registry.launch.nttdata.com/module_primitive/dns_record/aws"
+  version = "~> 1.0"
+
+  for_each = length(var.dns_zone_name) > 0 && length(var.additional_cnames) > 0 ? toset(var.additional_cnames) : []
+
+  zone_id = data.aws_route53_zone.dns_zone[0].zone_id
+  records = {
+    (each.key) = {
+      name    = each.key
+      type    = "CNAME"
+      ttl     = 300
+      records = ["${module.resource_names["alb"].standard}.${var.dns_zone_name}"]
+    }
+  }
 }

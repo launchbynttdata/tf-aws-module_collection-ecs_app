@@ -39,7 +39,7 @@ This module will provision a ECS Service for a corresponding application. It wil
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_vpc"></a> [vpc](#module\_vpc) | terraform-aws-modules/vpc/aws | ~> 5.1.1 |
-| <a name="module_ecs_platform"></a> [ecs\_platform](#module\_ecs\_platform) | git::https://github.com/launchbynttdata/tf-aws-module_collection-ecs_platform.git | 1.0.0 |
+| <a name="module_ecs_platform"></a> [ecs\_platform](#module\_ecs\_platform) | terraform.registry.launch.nttdata.com/module_collection/ecs_platform/aws | ~> 1.1 |
 | <a name="module_ecr"></a> [ecr](#module\_ecr) | terraform.registry.launch.nttdata.com/module_collection/ecr/aws | ~> 1.0 |
 | <a name="module_ecs_app"></a> [ecs\_app](#module\_ecs\_app) | ../.. | n/a |
 
