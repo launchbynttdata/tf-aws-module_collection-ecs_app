@@ -35,6 +35,7 @@ module "resource_names" {
   maximum_length          = each.value.max_length
 }
 
+
 module "config_bucket" {
   source  = "terraform.registry.launch.nttdata.com/module_collection/s3_bucket/aws"
   version = "~> 1.0"
