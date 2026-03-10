@@ -56,7 +56,6 @@ terraform.rc
 # Files from common modules
 azure_env.sh
 .releaserc.json
-.tflint.hcl
 
 # Pre-commit hook
 .pre-commit-config.yaml
