@@ -2,7 +2,7 @@ terraform.*
 .repo/
 components/
 .semverbot.toml
-.tflint.hcl
+# .tflint.hcl
 .golangci.yaml
 
 .idea
