@@ -1,6 +1,6 @@
 logical_product_service = "dso101"
-# Ensure you have a profile by this name in your ~/.aws/config file
-aws_profile = "launch-sandbox-admin"
+# Use empty string for CI, or set to your profile name for local testing
+aws_profile = ""
 
 resource_names_map = {
   # Platform
