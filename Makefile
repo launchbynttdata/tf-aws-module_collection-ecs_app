@@ -134,7 +134,7 @@ endif
 #Remember to remove
 .PHONY: terraform-init
 terraform-init:
-  terraform init -backend=false
+	terraform init -backend=false
 
 .PHONY: lint
 lint: terraform-init
