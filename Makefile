@@ -130,3 +130,16 @@ init-clean:
 ifneq (,$(wildcard ./TEMPLATED_README.md))
 	mv TEMPLATED_README.md README.MD
 endif
+
+#Remember to remove
+.PHONY: terraform-init
+terraform-init:
+  terraform init -backend=false
+
+.PHONY: lint
+lint: terraform-init
+ $(MAKE) -C $(MODULE_DIR) lint
+
+ .PHONY: test
+test: terraform-init
+ $(MAKE) -C $(MODULE_DIR) test

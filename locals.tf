@@ -30,9 +30,9 @@ locals {
   ingress_with_sg_block = coalesce(try(lookup(var.ecs_svc_security_group, "ingress_with_sg", []), []), [])
   ingress_with_sg = length(local.ingress_with_sg_block) > 0 && var.load_balancer_type == "application" ? [
     for sg in local.ingress_with_sg_block : {
-      from_port                = try(lookup(sg, "port"), 443)
-      to_port                  = try(lookup(sg, "port"), 443)
-      protocol                 = try(lookup(sg, "protocol"), "tcp")
+      from_port                = try(sg.port, 443)
+      to_port                  = try(sg.port, 443)
+      protocol                 = try(sg.protocol, "tcp")
       source_security_group_id = sg.security_group_id
     }
 
@@ -41,9 +41,9 @@ locals {
   egress_with_sg_block = coalesce(try(lookup(var.ecs_svc_security_group, "egress_with_sg", []), []), [])
   egress_with_sg = length(local.egress_with_sg_block) > 0 && var.load_balancer_type == "application" ? [
     for sg in local.egress_with_sg_block : {
-      from_port                = try(lookup(sg, "port"), 443)
-      to_port                  = try(lookup(sg, "port"), 443)
-      protocol                 = try(lookup(sg, "protocol"), "tcp")
+      from_port                = try(sg.port, 443)
+      to_port                  = try(sg.port, 443)
+      protocol                 = try(sg.protocol, "tcp")
       source_security_group_id = sg.security_group_id
     }
 
