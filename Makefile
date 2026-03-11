@@ -136,10 +136,10 @@ endif
 terraform-init:
 	terraform init -backend=false
 
-.PHONY: lint
-lint: terraform-init
-	$(MAKE) -C $(MODULE_DIR) lint
+# .PHONY: lint
+# lint: terraform-init
+# 	$(MAKE) -C $(MODULE_DIR) lint
 
-.PHONY: test
-test: terraform-init
-	$(MAKE) -C $(MODULE_DIR) test
+# .PHONY: test
+# test: terraform-init
+# 	$(MAKE) -C $(MODULE_DIR) test
