@@ -1,4 +1,4 @@
-logical_product_service = "dso101"
+logical_product_service = "dso102"
 # Use empty string for CI, or set to your profile name for local testing
 aws_profile = ""
 
@@ -92,7 +92,7 @@ vpce_security_group = {
   egress_cidr_blocks  = ["0.0.0.0/0"]
 }
 
-ecr_repo_name     = "terratest-backend-5003"
+ecr_repo_name     = "terratest-backend-5004"
 repo_force_delete = true
 
 alb_sg = {
