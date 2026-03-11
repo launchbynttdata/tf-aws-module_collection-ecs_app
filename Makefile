@@ -138,8 +138,8 @@ terraform-init:
 
 .PHONY: lint
 lint: terraform-init
- $(MAKE) -C $(MODULE_DIR) lint
+	$(MAKE) -C $(MODULE_DIR) lint
 
- .PHONY: test
+.PHONY: test
 test: terraform-init
- $(MAKE) -C $(MODULE_DIR) test
+	$(MAKE) -C $(MODULE_DIR) test
