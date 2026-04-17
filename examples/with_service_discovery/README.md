@@ -19,7 +19,7 @@ This module will provision a ECS Service for a corresponding application. It wil
 - Command to execute the module
   `terraform apply -var-file test.tfvars`
 
-<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -31,7 +31,7 @@ This module will provision a ECS Service for a corresponding application. It wil
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.66.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.100.0 |
 | <a name="provider_terraform"></a> [terraform](#provider\_terraform) | n/a |
 
 ## Modules
@@ -60,7 +60,7 @@ This module will provision a ECS Service for a corresponding application. It wil
 | <a name="input_environment_number"></a> [environment\_number](#input\_environment\_number) | The environment count for the respective environment. Defaults to 000. Increments in value of 1 | `string` | `"000"` | no |
 | <a name="input_resource_number"></a> [resource\_number](#input\_resource\_number) | The resource count for the respective resource. Defaults to 000. Increments in value of 1 | `string` | `"000"` | no |
 | <a name="input_region"></a> [region](#input\_region) | AWS Region in which the infra needs to be provisioned | `string` | `"us-east-2"` | no |
-| <a name="input_resource_names_map"></a> [resource\_names\_map](#input\_resource\_names\_map) | A map of key to resource\_name that will be used by tf-launch-module\_library-resource\_name to generate resource names | <pre>map(object(<br>    {<br>      name       = string<br>      max_length = optional(number, 60)<br>    }<br>  ))</pre> | <pre>{<br>  "ecs_cluster": {<br>    "name": "fargate"<br>  },<br>  "ecs_sg": {<br>    "name": "ecs-sg"<br>  },<br>  "vpce_sg": {<br>    "name": "vpce-sg"<br>  }<br>}</pre> | no |
+| <a name="input_resource_names_map"></a> [resource\_names\_map](#input\_resource\_names\_map) | A map of key to resource\_name that will be used by tf-launch-module\_library-resource\_name to generate resource names | <pre>map(object(<br>    {<br>      name       = string<br>      max_length = optional(number, 60)<br>    }<br>  ))</pre> | <pre>{<br>  "ecs_cluster": {<br>    "name": "fargate"<br>  },<br>  "ecs_service": {<br>    "name": "svc"<br>  },<br>  "ecs_sg": {<br>    "name": "ecs-sg"<br>  },<br>  "vpce_sg": {<br>    "name": "vpce-sg"<br>  }<br>}</pre> | no |
 | <a name="input_vpc_name"></a> [vpc\_name](#input\_vpc\_name) | n/a | `string` | `"test-vpc-015935234"` | no |
 | <a name="input_vpc_cidr"></a> [vpc\_cidr](#input\_vpc\_cidr) | n/a | `string` | `"10.1.0.0/16"` | no |
 | <a name="input_private_subnets"></a> [private\_subnets](#input\_private\_subnets) | List of private subnet cidrs | `list(string)` | <pre>[<br>  "10.1.1.0/24",<br>  "10.1.2.0/24",<br>  "10.1.3.0/24"<br>]</pre> | no |
@@ -124,4 +124,4 @@ This module will provision a ECS Service for a corresponding application. It wil
 | <a name="output_ecs_task_definition_arn"></a> [ecs\_task\_definition\_arn](#output\_ecs\_task\_definition\_arn) | n/a |
 | <a name="output_s3_logs_arn"></a> [s3\_logs\_arn](#output\_s3\_logs\_arn) | n/a |
 | <a name="output_s3_logs_id"></a> [s3\_logs\_id](#output\_s3\_logs\_id) | n/a |
-<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- END_TF_DOCS -->

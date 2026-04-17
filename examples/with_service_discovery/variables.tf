@@ -78,6 +78,9 @@ variable "resource_names_map" {
     ecs_cluster = {
       name = "fargate"
     }
+    ecs_service = {
+      name = "svc"
+    }
     ecs_sg = {
       name = "ecs-sg"
     }
