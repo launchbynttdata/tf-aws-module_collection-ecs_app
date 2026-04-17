@@ -39,8 +39,8 @@ module "ecr" {
 resource "terraform_data" "ecr_push" {
   provisioner "local-exec" {
     command = <<-EOT
-      # Make sure user is logged in to AWS to the same profile specified here
-      aws ecr get-login-password --region ${var.region} --profile ${var.aws_profile} | docker login --username AWS --password-stdin ${data.aws_caller_identity.default.account_id}.dkr.ecr.${var.region}.amazonaws.com
+      # Use the named profile locally when provided, otherwise rely on ambient AWS credentials.
+      aws ecr get-login-password --region ${var.region} ${length(trimspace(var.aws_profile)) > 0 ? "--profile ${var.aws_profile}" : ""} | docker login --username AWS --password-stdin ${data.aws_caller_identity.default.account_id}.dkr.ecr.${var.region}.amazonaws.com
       docker pull --platform=linux/amd64  nginx:1.22.1-alpine
       docker tag  nginx:1.22.1-alpine "${module.ecr.repository_url}:${var.image_tag}"
       docker push "${module.ecr.repository_url}:${var.image_tag}"

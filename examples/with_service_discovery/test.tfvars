@@ -1,6 +1,6 @@
 logical_product_service = "dso102"
-# Ensure you have a profile by this name in your ~/.aws/config file
-aws_profile = "launch-sandbox-admin"
+# Leave empty in CI so the ECR login uses ambient AWS credentials.
+aws_profile = ""
 
 resource_names_map = {
   # Platform

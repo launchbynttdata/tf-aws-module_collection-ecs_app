@@ -1,6 +1,6 @@
-logical_product_service = "dso101"
-# Ensure you have a profile by this name in your ~/.aws/config file
-aws_profile = "launch-sandbox-admin"
+logical_product_service = "dso103"
+# Leave empty in CI so the ECR login uses ambient AWS credentials.
+aws_profile = ""
 
 resource_names_map = {
   # Platform
@@ -92,7 +92,7 @@ vpce_security_group = {
   egress_cidr_blocks  = ["0.0.0.0/0"]
 }
 
-ecr_repo_name     = "terratest-backend-5003"
+ecr_repo_name     = "terratest-backend-5004"
 repo_force_delete = true
 
 alb_sg = {
