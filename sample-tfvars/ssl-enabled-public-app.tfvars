@@ -21,11 +21,11 @@ public_subnets = ["<list-of-public-subnet-ids>"]
 
 ecs_cluster_arn = "<ecs-cluster-arn>"
 
-ecr_repo_name = "ecs-app"
+ecr_repo_name   = "ecs-app"
 create_ecr_repo = true
 force_delete    = true
 
-app_image = "020127659860.dkr.ecr.us-east-2.amazonaws.com/ecs-app:latest"
+app_image = "<aws_account_id>.dkr.ecr.us-east-2.amazonaws.com/ecs-app:latest"
 
 alb_sg = {
   description         = "Allow traffic from everywhere on 80"
@@ -95,6 +95,6 @@ desired_count = 2
 
 is_internal        = false
 load_balancer_type = "application"
-dns_zone_name      = "sandbox.launch.nttdata.com"
+dns_zone_name      = "<dns_zone_name>"
 private_zone       = false
 additional_cnames  = ["<fqdn-cnames>"]
